@@ -1,0 +1,16 @@
+[user]
+    name = Aleem Haji
+    email = hajial@gmail.com
+[alias]
+    graph = log --graph --pretty=format:'%Cred%h%Creset - %C(bold blue)<%an>%Creset %s %Cgreen(%cr)' --abbrev-commit --date=relative
+    sdiff = !git diff | subl &
+    sdiffc = !git diff --cached | subl &
+    abort = reset --hard
+    log-export = log --format='%ad %B' --no-merges --reverse    
+    fucking-obliterate = "!f() { git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch '"$@" --prune-empty --tag-name-filter cat -- --all; }; f"
+    fucking-obliterate-recursive = "!f() { git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch '"$@" --prune-empty --tag-name-filter cat -- --all; }; f"
+[core]
+    editor = nano
+    excludesfile = ~/.gitignore
+[merge]
+    tool = opendiff

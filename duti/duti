@@ -1,0 +1,6 @@
+# Sublime should open all plain text files.
+com.sublimetext.2 public.plain-text                  all
+com.sublimetext.2 public.comma-separated-values-text all
+
+# Set up a bunch of video files to open with VLC.
+org.videolan.vlc  public.movie                       all

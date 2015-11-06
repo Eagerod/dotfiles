@@ -4,6 +4,7 @@ com.sublimetext.2 public.comma-separated-values-text all
 com.sublimetext.2 public.source-code                 all
 com.sublimetext.2 public.script                      all
 com.sublimetext.2 public.shell-script                all
+com.sublimetext.2 public.python-script               all
 com.sublimetext.2 net.daringfireball.markdown        all
 
 # Set up a bunch of video files to open with VLC.

@@ -6,6 +6,7 @@ brew install heroku-toolbelt
 brew install nodejs
 brew install mongodb
 brew install duti
+brew install --with-rlwrap repl
 # brew install boot2docker # Only if doing docker stuff.
 
 brew cask install ngrok

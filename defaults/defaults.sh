@@ -16,8 +16,9 @@ defaults write com.apple.dock orientation -string left
 # Wait 1 minute before locking when screensaver
 defaults write com.apple.screensaver askForPasswordDelay -float 60
 
-# Strange key name, but enable zooming with control + scroll
+# Zooming with control + scroll settings
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+defaults write com.apple.universalaccess closeViewSmoothImages -bool true
 
 killall Dock
 

@@ -14,7 +14,6 @@ do_backup() {
 
 echo "*.DS_Store" > ".rsync_exclude"
 echo "*/.git/*" >> ".rsync_exclude"
-echo "*.rsync_pass" >> ".rsync_exclude"
 echo ".rsync_exclude" >> ".rsync_exclude"
 
 # Sync Steam Libraries to NAS

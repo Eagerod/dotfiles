@@ -22,26 +22,26 @@ echo ".rsync_exclude" >> ".rsync_exclude"
 
 # Sync Steam Libraries to NAS
 clear; echo "Syncing Steam library"
-do_backup "/Users/Aleem/Library/Application Support/Steam/SteamApps/" "/backups/Mac SteamApps"
+do_backup "$HOME/Library/Application Support/Steam/SteamApps/" "/backups/Mac SteamApps"
 
 # Sync Photo Libraries to NAS
 clear; echo "Syncing photo library from both directories"
-do_backup "/Users/Aleem/Pictures/iPhoto Games Screenshots Library.photolibrary" "/backups/Photos/"
-do_backup "/Users/Aleem/Pictures/iPhoto Library" "/backups/Photos/"
+do_backup "$HOME/Pictures/iPhoto Games Screenshots Library.photolibrary" "/backups/Photos/"
+do_backup "$HOME/Pictures/iPhoto Library" "/backups/Photos/"
 
 # Sync iPhone backups
 clear; echo "Syncing iPhone backups"
-do_backup "/Users/Aleem/Library/Application Support/MobileSync/Backup/" "/backups/iPhone Backups"
+do_backup "$HOME/Library/Application Support/MobileSync/Backup/" "/backups/iPhone Backups"
 
 # Sync Home Directory Contents to NAS
 clear; echo "Syncing ~ directories"
-do_backup "/Users/Aleem/Documents" "/backups/"
-do_backup "/Users/Aleem/Desktop/" "/backups/MacDesktop"
-do_backup "/Users/Aleem/Dropbox" "/backups/"
+do_backup "$HOME/Documents" "/backups/"
+do_backup "$HOME/Desktop/" "/backups/MacDesktop"
+do_backup "$HOME/Dropbox" "/backups/"
 
 # Sync up old Xcode Archives so that they can be cleared out from this system.
 clear; echo "Syncing old Xcode Archives"
-do_backup "/Users/Aleem/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
+do_backup "$HOME/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
 
 # If the external hard drive is plugged in, sync a bunch of shit from there.
 if [ -d /Volumes/Games ]; then

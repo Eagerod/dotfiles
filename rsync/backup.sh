@@ -20,13 +20,9 @@ rsync_params="$rsync_params --exclude-from=.rsync_exclude"
 # Sync Mac EVE to NAS
 # rsync $rsync_params "/Applications/EVE Online.app" $dst_root:/backups/
 
-# Sync Diablo 3 from the Windows Partition to NAS
-# rsync $rsync_params "/Volumes/Windows HD/Blizzard" $dst_root:/backups/Blizzard
-
 # Sync Steam Libraries to NAS
-clear; echo "Syncing Steam library from both partitions"
+clear; echo "Syncing Steam library"
 rsync $rsync_params "/Users/Aleem/Library/Application Support/Steam/SteamApps/" $dst_root:/backups/Mac\ SteamApps
-rsync $rsync_params "/Volumes/Windows HD/Program Files (x86)/Steam/steamapps/" $dst_root:/Games/Steam/steamapps/
 
 # Sync Photo Libraries to NAS
 clear; echo "Syncing photo library from both directories"

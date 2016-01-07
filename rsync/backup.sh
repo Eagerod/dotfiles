@@ -17,16 +17,12 @@ echo "*/.git/*" >> ".rsync_exclude"
 echo "*.rsync_pass" >> ".rsync_exclude"
 echo ".rsync_exclude" >> ".rsync_exclude"
 
-# Sync Mac EVE to NAS
-# do_backup "/Applications/EVE Online.app" "/backups/"
-
 # Sync Steam Libraries to NAS
 clear; echo "Syncing Steam library"
 do_backup "$HOME/Library/Application Support/Steam/SteamApps/" "/backups/Mac SteamApps"
 
 # Sync Photo Libraries to NAS
 clear; echo "Syncing photo library from both directories"
-do_backup "$HOME/Pictures/iPhoto Games Screenshots Library.photolibrary" "/backups/Photos/"
 do_backup "$HOME/Pictures/iPhoto Library" "/backups/Photos/"
 
 # Sync iPhone backups
@@ -42,16 +38,6 @@ do_backup "$HOME/Dropbox" "/backups/"
 # Sync up old Xcode Archives so that they can be cleared out from this system.
 clear; echo "Syncing old Xcode Archives"
 do_backup "$HOME/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
-
-# If the external hard drive is plugged in, sync a bunch of shit from there.
-if [ -d /Volumes/Games ]; then
-	
-	do_backup "/Volumes/Games/EVE" "/backups/"
-	# Don't sync Guild Wars because the asshole developers wrapped up like 16 gigs into a single file. 
-	# do_backup "/Volumes/Games/Guild Wars 2" "/backups/"
-	# do_backup "/Volumes/Games/Program Files \(x86\)/Steam" "/backups/"
-
-fi
 
 rm ".rsync_exclude"
 unset RSYNC_PASSWORD

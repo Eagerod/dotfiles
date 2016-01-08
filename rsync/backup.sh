@@ -2,6 +2,7 @@
 
 if [ $# -ne 2 ]; then
     echo "Usage: backup.sh <server ip> <password>"
+    exit 1
 fi
 
 # "Session" variables to clean up the script.

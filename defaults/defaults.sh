@@ -14,6 +14,7 @@ defaults write NSGlobalDomain com.apple.trackpad.scaling -float 0.6875
 defaults write com.apple.dock orientation -string left
 
 # Wait 1 minute before locking when screensaver
+defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -float 60
 
 # Zooming with control + scroll settings

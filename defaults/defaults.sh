@@ -21,6 +21,8 @@ defaults write com.apple.screensaver askForPasswordDelay -float 60
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
 defaults write com.apple.universalaccess closeViewSmoothImages -bool true
 
+defaults write com.apple.airplay showInMenuBarIfPresent -bool true
+
 # Live in the matrix
 defaults write com.apple.Terminal 'Startup Window Settings' -string Homebrew
 defaults write com.apple.Terminal 'Default Window Settings' -string Homebrew

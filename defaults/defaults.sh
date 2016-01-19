@@ -29,6 +29,8 @@ defaults write com.apple.Terminal 'Default Window Settings' -string Homebrew
 
 # Xcode settings
 defaults write com.apple.dt.Xcode DVTTextShowLineNumbers -bool true
+defaults write com.apple.dt.Xcode DVTTextPageGuideLocation -int 120
+defaults write com.apple.dt.Xcode DVTTextShowPageGuide -bool true
 
 # Nested things that are tough to get with `defaults`
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 128" ~/Library/Preferences/com.apple.finder.plist

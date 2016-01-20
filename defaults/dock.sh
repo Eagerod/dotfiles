@@ -36,6 +36,7 @@ clear_dock
 add_app_to_dock "/opt/homebrew-cask/Caskroom/spotify" "Spotify.app"
 add_app_to_dock "/Applications" "Messages.app"
 add_app_to_dock "/opt/homebrew-cask/Caskroom/sublime-text" "Sublime Text 2.app"
+add_app_to_dock "/Applications" "Xcode.app"
 add_app_to_dock "/Applications" "Terminal.app"
 if type charm > /dev/null 2> /dev/null; then
     add_app_to_dock "/opt/homebrew-cask/Caskroom/pycharm" "PyCharm.app"

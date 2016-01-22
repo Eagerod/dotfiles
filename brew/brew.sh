@@ -1,3 +1,9 @@
+#!/bin/sh
+
+if ! type brew > /dev/null 2> /dev/null; then
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
 brew update
 
 brew install caskroom/cask/brew-cask
@@ -13,7 +19,6 @@ brew cask install ngrok
 brew cask install sublime-text
 brew cask install dropbox
 brew cask install google-chrome
-brew cask install firefox
 brew cask install virtualbox
 brew cask install skype
 brew cask install slack

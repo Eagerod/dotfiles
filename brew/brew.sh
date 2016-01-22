@@ -26,7 +26,6 @@ brew cask install spotify
 brew cask install steam
 brew cask install vlc
 brew cask install mactex
-brew cask install robomongo
 brew cask install transmission
 brew cask install flux
 brew cask install istat-menus

@@ -14,6 +14,7 @@
     assumed = "!git ls-files -v | grep ^h | cut -c 3-"
     clean-ds = "!find . -iname '.DS_Store' -exec rm {} \\;"
     clean-orig = "!find . -iname '*.orig' -exec rm {} \\;"
+    this-branch = rev-parse --abbrev-ref HEAD
 [core]
     editor = nano
     excludesfile = ~/.gitignore

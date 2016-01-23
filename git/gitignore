@@ -1,0 +1,16 @@
+# Mac OS X and Windows state files
+.DS_Store
+thumbs.db
+
+# Compile Directories
+bin/
+obj/
+
+# Xcode user state files
+*project.xcworkspace/
+*xcuserdata/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*xcshareddata/

@@ -1,5 +1,7 @@
 ## Git dotfiles
-So the only file in here is the `.gitconfig` file that I keep in my home directory.
+
+My default Git config files. 
+Contains gitconfig and gitignore. 
 Its got a few notable aliases, some of which have dependencies that will be in other dotfile directories.
 
 - `sdiff` and `sdiffc` push diffs into Sublime Text, once its `bin` dir has been added to `$PATH`.

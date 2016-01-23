@@ -16,6 +16,7 @@ defaults write com.apple.dock orientation -string left
 # Wait 1 minute before locking when screensaver
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -float 60
+defaults -currentHost write com.apple.screensaver idleTime -int 60
 
 # Zooming with control + scroll settings
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true

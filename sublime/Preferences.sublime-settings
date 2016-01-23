@@ -1,8 +1,10 @@
 {
+    "bold_folder_labels": true,
     "close_windows_when_empty": true,
     "color_scheme": "Packages/Color Scheme - Default/Sunburst.tmTheme",
     "detect_indentation": true,
-    "font_size": 12.0,
+    "ensure_newline_at_eof_on_save": true,
+    "font_size": 13.0,
     "open_files_in_new_window": false,
     "rulers":
     [
@@ -10,7 +12,5 @@
         120
     ],
     "spell_check": true,
-    "translate_tabs_to_spaces": true,
-    "ensure_newline_at_eof_on_save": true,
-    "bold_folder_labels": true
+    "translate_tabs_to_spaces": true
 }

@@ -11,3 +11,5 @@ cp git/gitconfig ~/.gitconfig
 cp git/gitignore ~/.gitignore
 
 cp sublime/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text*/Packages/User/
+
+cp bin/* /usr/local/bin/

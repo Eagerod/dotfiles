@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# A hopefully kind of useful line counter.
+#
+
+filetypes=()
+excludes=()
+
+do_program() {
+    # Build up the command
+    if [ ${#excludes[@]} -gt 0 ]; then
+        for exclude in ${excludes[@]}; do
+            excludes_string=$(printf '%s' "$excludes_string -path */$exclude -o")
+        done
+        excludes_string="${excludes_string%??}"
+        excludes_string="( $excludes_string ) -prune -o"
+    fi
+
+    if [ ${#filetypes[@]} -gt 0 ]; then
+        for filetype in ${filetypes[@]}; do
+            filetypes_string=$(printf '%s' "$filetypes_string -iname *.$filetype -o")
+        done
+        filetypes_string="${filetypes_string%??}"
+        filetypes_string="( $filetypes_string )"
+    fi
+
+    set -f
+    find . $excludes_string $filetypes_string -print | xargs wc -l
+}
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -e) 
+            shift
+            excludes+=("$1")
+            shift
+            ;;
+        -i)
+            shift
+            filetypes+=("$1")
+            shift
+            ;;
+        *)
+            if [ $1 = cpp ]; then
+                filetypes+=("cpp" "h")
+            elif [ $1 = java ]; then
+                filetypes+=("java")
+            elif [ $1 = py ]; then
+                filetypes+=("py")
+            elif [ $1 = js ]; then
+                filetypes+=("js")
+                excludes+=("node_modules")
+            else
+                echo "Unknown language"
+                exit -1
+            fi
+            shift
+            ;;
+    esac
+done
+
+do_program

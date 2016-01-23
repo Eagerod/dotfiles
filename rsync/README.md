@@ -1,5 +1,5 @@
-Rsync
-===
+# Rsync
+
 I've decided to include my `rsync` backup scripts in here for a bunch of reasons:
 
 - It's a safe place to keep them.

@@ -1,8 +1,6 @@
-Defaults
-===
+# Defaults
 
-Just a script that sets up a bunch of settings that I like to have.
+Contains two files:
 
-Dock Spacer
----
-Just creates an empty item on the dock, which I use to separate out my "always on" applications from just the common ones.
+- `defaults.sh` - A script that sets up a bunch of system settings that I like having.
+- `dock.sh` - A script that sets up the Dock to have the programs I like having on it. 

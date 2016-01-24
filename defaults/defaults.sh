@@ -43,6 +43,11 @@ defaults write org.herf.Flux sleepLate -integer 1
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:gridSpacing 72" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:arrangeBy dateModified" ~/Library/Preferences/com.apple.finder.plist
 
+echo "Modifying SystemConfiguration..."
+sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:AC\ Power:Display\ Sleep\ Timer 1" /Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist
+sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:Battery\ Power:Display\ Sleep\ Timer 1" /Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist
+sudo -k # No side effects?
+
 killall Dock
 killall Xcode
 

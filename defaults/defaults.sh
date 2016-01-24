@@ -33,6 +33,11 @@ defaults write com.apple.dt.Xcode DVTTextShowLineNumbers -bool true
 defaults write com.apple.dt.Xcode DVTTextPageGuideLocation -int 120
 defaults write com.apple.dt.Xcode DVTTextShowPageGuide -bool true
 
+# Flux
+defaults write org.herf.Flux locationTextField -string '43.000,-81.000'
+defaults write org.herf.Flux location -string '43.000,-81.000'
+defaults write org.herf.Flux sleepLate -integer 1
+
 # Nested things that are tough to get with `defaults`
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 128" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:gridSpacing 72" ~/Library/Preferences/com.apple.finder.plist

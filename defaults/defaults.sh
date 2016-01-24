@@ -39,7 +39,7 @@ defaults write org.herf.Flux location -string '43.000,-81.000'
 defaults write org.herf.Flux sleepLate -integer 1
 
 # Nested things that are tough to get with `defaults`
-/usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 128" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 84" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:gridSpacing 72" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:arrangeBy dateModified" ~/Library/Preferences/com.apple.finder.plist
 

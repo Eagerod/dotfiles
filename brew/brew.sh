@@ -6,7 +6,6 @@ fi
 
 brew update
 
-brew install caskroom/cask/brew-cask
 brew install git
 brew install heroku-toolbelt
 brew install nodejs

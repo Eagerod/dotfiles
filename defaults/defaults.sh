@@ -12,6 +12,9 @@ defaults write NSGlobalDomain com.apple.trackpad.scaling -float 0.6875
 
 # Dock on left
 defaults write com.apple.dock orientation -string left
+defaults write com.apple.dock tilesize -float 45
+defaults write com.apple.dock magnification -bool true
+defaults write com.apple.dock largesize -float 40
 
 # Wait 1 minute before locking when screensaver
 defaults write com.apple.screensaver askForPassword -int 1

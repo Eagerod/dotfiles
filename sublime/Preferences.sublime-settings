@@ -1,7 +1,7 @@
 {
     "bold_folder_labels": true,
     "close_windows_when_empty": true,
-    "color_scheme": "Packages/Color Scheme - Default/Sunburst.tmTheme",
+    "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
     "detect_indentation": true,
     "ensure_newline_at_eof_on_save": true,
     "font_size": 13.0,

@@ -2,8 +2,8 @@
 
 sh brew/brew.sh
 
-sh defaults/defaults.sh
 sh defaults/dock.sh
+sh defaults/defaults.sh
 
 duti duti/duti # Lol
 

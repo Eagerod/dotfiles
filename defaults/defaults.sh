@@ -35,6 +35,7 @@ defaults write com.apple.Terminal 'Default Window Settings' -string Homebrew
 defaults write com.apple.dt.Xcode DVTTextShowLineNumbers -bool true
 defaults write com.apple.dt.Xcode DVTTextPageGuideLocation -int 120
 defaults write com.apple.dt.Xcode DVTTextShowPageGuide -bool true
+defaults write com.apple.dt.Xcode DVTTextShowFoldingSidebar -bool true
 
 # Flux
 defaults write org.herf.Flux locationTextField -string '43.000,-81.000'

@@ -45,6 +45,8 @@ while [ $# -gt 0 ]; do
                 filetypes+=("cpp" "h")
             elif [ $1 = java ]; then
                 filetypes+=("java")
+            elif [ $1 = objc ]; then
+                filetypes+=("m" "mm" "h")
             elif [ $1 = py ]; then
                 filetypes+=("py")
             elif [ $1 = js ]; then

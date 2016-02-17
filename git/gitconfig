@@ -15,6 +15,7 @@
     clean-ds = "!find . -iname '.DS_Store' -exec rm {} \\;"
     clean-orig = "!find . -iname '*.orig' -exec rm {} \\;"
     this-branch = rev-parse --abbrev-ref HEAD
+    branch-prune = "!git branch --merged | grep -v \\* | xargs -n 1 git branch -d"
 [core]
     editor = nano
     excludesfile = ~/.gitignore

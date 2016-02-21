@@ -47,6 +47,19 @@ defaults write org.herf.Flux sleepLate -integer 1
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:gridSpacing 72" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:arrangeBy dateModified" ~/Library/Preferences/com.apple.finder.plist
 
+# Apparently the wallpaper information is stored in an SQLite DB, so use an Apple Script to set up wallpapers.
+if [ -d "$HOME/Pictures/Wallpapers" ]; then
+    osascript -e '
+        tell application "System Events"
+            set desktopCount to count of desktops
+            repeat with desktopNumber from 1 to desktopCount
+                tell desktop desktopNumber
+                    set pictures folder to "'"$HOME/Pictures/Wallpapers"'"
+                end tell
+            end repeat
+        end tell'
+fi
+
 echo "Modifying SystemConfiguration..."
 sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:AC\ Power:Display\ Sleep\ Timer 1" /Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist
 sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:Battery\ Power:Display\ Sleep\ Timer 1" /Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist

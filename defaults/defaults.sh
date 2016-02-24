@@ -55,6 +55,8 @@ if [ -d "$HOME/Pictures/Wallpapers" ]; then
             repeat with desktopNumber from 1 to desktopCount
                 tell desktop desktopNumber
                     set pictures folder to "'"$HOME/Pictures/Wallpapers"'"
+                    set change interval to 300
+                    set picture rotation to 1
                 end tell
             end repeat
         end tell'

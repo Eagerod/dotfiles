@@ -27,6 +27,13 @@ defaults write com.apple.universalaccess closeViewSmoothImages -bool true
 
 defaults write com.apple.airplay showInMenuBarIfPresent -bool true
 
+# Menu Bar setup
+defaults write com.apple.systemuiserver menuExtras -array 
+defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Displays.menu"
+defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Volume.menu"
+defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
+defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/AirPort.menu"
+
 # Live in the matrix
 defaults write com.apple.Terminal 'Startup Window Settings' -string Homebrew
 defaults write com.apple.Terminal 'Default Window Settings' -string Homebrew
@@ -69,5 +76,6 @@ sudo -k # No side effects?
 
 killall Dock
 killall Xcode
+killall SystemUIServer
 
 echo "Some settings have been updated. But you'll have to log out and back in again for some settings to apply."

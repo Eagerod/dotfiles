@@ -6,6 +6,9 @@ thumbs.db
 bin/
 obj/
 
+# Git intermediates
+*.orig
+
 # Xcode user state files
 *project.xcworkspace/
 *xcuserdata/

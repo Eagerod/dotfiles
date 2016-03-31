@@ -28,7 +28,7 @@ defaults write com.apple.universalaccess closeViewSmoothImages -bool true
 defaults write com.apple.airplay showInMenuBarIfPresent -bool true
 
 # Menu Bar setup
-defaults write com.apple.systemuiserver menuExtras -array 
+defaults write com.apple.systemuiserver menuExtras -array
 defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Displays.menu"
 defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Volume.menu"
 defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
@@ -48,6 +48,9 @@ defaults write com.apple.dt.Xcode DVTTextShowFoldingSidebar -bool true
 defaults write org.herf.Flux locationTextField -string '43.000,-81.000'
 defaults write org.herf.Flux location -string '43.000,-81.000'
 defaults write org.herf.Flux sleepLate -integer 1
+
+# Fix up Spotify's backgrounded skipping issue.
+defaults write com.spotify.client NSAppSleepDisabled -bool YES
 
 # Nested things that are tough to get with `defaults`
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 84" ~/Library/Preferences/com.apple.finder.plist

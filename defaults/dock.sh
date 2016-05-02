@@ -21,7 +21,8 @@ add_other_to_dock() {
     url_string_type="<key>_CFURLStringType</key><integer>15</integer>"
     file_data="<key>file-data</key><dict>$url_string$url_string_type</dict>"
     displayas="<key>displayas</key><integer>1</integer>"
-    tile_data="<key>tile-data</key><dict>$file_data$displayas</dict>"
+    arrangement="<key>arrangement</key><integer>3</integer>"
+    tile_data="<key>tile-data</key><dict>$file_data$displayas$arrangement</dict>"
     tile_type="<key>tile-type</key><string>directory-tile</string>"
     defaults write com.apple.dock persistent-others -array-add "<dict>$tile_data$tile_type</dict>"
 }

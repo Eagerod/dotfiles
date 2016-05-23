@@ -48,6 +48,7 @@ defaults write com.apple.dt.Xcode DVTTextShowFoldingSidebar -bool true
 defaults write org.herf.Flux locationTextField -string '43.000,-81.000'
 defaults write org.herf.Flux location -string '43.000,-81.000'
 defaults write org.herf.Flux sleepLate -integer 1
+defaults write org.herf.Flux "disable-org.videolan.vlc" -bool true
 
 # Fix up Spotify's backgrounded skipping issue.
 defaults write com.spotify.client NSAppSleepDisabled -bool YES

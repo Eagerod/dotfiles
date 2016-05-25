@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+#
+# Little script that prints out directories down to a minimum specified size.
+# Finds subdirectories and continuously prints out sizes and sorts by size descending before traversing into the next
+# directory
+#
+
+if [ $# -ne 2 ]; then
+    echo "usage: find_big_dirs <minimum bytes> <start/path>"
+    exit -1
+fi
+
+ignore_directories=(
+    "^/Volumes/"
+    "^/private/var/"
+    "/.git"
+)
+
+remaining="0 "$(cd $2; pwd)""
+
+while [ "$remaining" != "" ]; do
+    item=`echo "$remaining" | head -1 | awk '{$1 = ""; print}' | sed 's/^[ \t]*//'`
+    remaining=`echo "$remaining" | awk '{if(NR > 1)print}' | sed "s/^[ \t]*//"`
+
+    if [ "${item: -4}" == ".app" ]; then
+        >&2 echo "Skipping application ($item)"
+        continue
+    fi
+
+    echo "Searching through $(cd "$item"; pwd). `echo "$remaining" | wc -l | sed 's/^[ \t]*//'` items to process"
+    current=`du -d 1 -k "$item" | awk 'NR>1{print buf}{buf = $0}' | sort -nr | awk -v min="$1" '{if($1 > min)print}'`
+
+    for ignore in ${ignore_directories[@]}; do
+        current=`echo "$current" | grep -ve "$ignore"`
+    done
+
+    echo "$current\n"
+
+    remaining=`echo "$remaining\n$current" | sort -nr`
+done

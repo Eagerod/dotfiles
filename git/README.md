@@ -1,4 +1,4 @@
-## Git
+# Git
 
 My default Git config files. 
 Contains gitconfig and gitignore. 

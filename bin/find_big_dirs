@@ -6,7 +6,7 @@
 #
 
 if [ $# -ne 2 ]; then
-    echo "usage: find_big_dirs <minimum bytes> <start/path>"
+    >&2 echo "usage: find_big_dirs <minimum bytes> <start/path>"
     exit -1
 fi
 

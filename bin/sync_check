@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+#
+# Little script that searches through a BitTorrent Sync directory and prints out
+# the filenames of all files that should be getting tracked by BT Sync.
+#
+
+if [ $# -ne 1 ]; then
+    >&2 echo "usage: sync_check <path/to/dir>"
+    exit -1
+fi
+
+cwd=$(cd $1; pwd)
+
+while [ ! -d .sync ]; do
+    if [ $(pwd) = "/" ]; then
+        >&2 echo "No .sync directory found."
+        exit -1
+    fi
+    cd ..
+done
+
+output_file=$(uuidgen)
+cat ".sync/IgnoreList" | sed 's/#.*//' | while read -r line; do
+    if [ "${#line}" -lt 2 ]; then
+        continue
+    fi
+    echo "$line" | sed 's/\*/\\\*/g' # Do a lil regexp escaping super shittily
+done > "/tmp/$output_file"
+
+find "$cwd" | grep -v -f "/tmp/$output_file" | grep -v "/.sync"

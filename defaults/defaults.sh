@@ -57,6 +57,8 @@ defaults write com.spotify.client NSAppSleepDisabled -bool YES
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:iconSize 84" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:gridSpacing 72" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:arrangeBy dateModified" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:textSize 12" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "set DesktopViewSettings:IconViewSettings:showItemInfo YES" ~/Library/Preferences/com.apple.finder.plist
 
 # Apparently the wallpaper information is stored in an SQLite DB, so use an Apple Script to set up wallpapers.
 if [ -d "$HOME/Pictures/Wallpapers" ]; then

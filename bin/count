@@ -25,7 +25,7 @@ do_program() {
     fi
 
     set -f
-    find . $excludes_string $filetypes_string -print | xargs wc -l
+    find . $excludes_string $filetypes_string -print0 | xargs -0 wc -l
 }
 
 while [ $# -gt 0 ]; do

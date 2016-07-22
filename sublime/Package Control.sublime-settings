@@ -1,6 +1,7 @@
 {
     "installed_packages":
     [
+        "Indent XML",
         "Package Control",
         "Pretty JSON"
     ]

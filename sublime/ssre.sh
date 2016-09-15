@@ -26,7 +26,7 @@ do
     for i in $(seq 0 $((${#regular_expression}-1))) 
     do
         character=${regular_expression:$i:1}
-        if [ $character = "[" ] 
+        if [ $character = "[" ]
         then
             # Duplicate entire word_builder for every character until "]"
             duplicating=true
@@ -44,5 +44,8 @@ do
             all_wordset=($(append_character_to_all $character ${all_wordset[@]}))
         fi
     done
-    echo ${all_wordset[@]}
+    for word in ${all_wordset[@]}
+    do
+        echo $word
+    done
 done

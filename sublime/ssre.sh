@@ -3,6 +3,11 @@
 # Super Simple Regular Expression Expander.
 #
 # Takes a very limited subset of regular expressions and expands out possible choices.
+# Will (obviously) never work with regular expressions containing non-finitely repeating characters.
+# Will probably not support very mechanisms that exist in regular expressions.
+#
+# Currently supported mechanisms:
+# - Character Sets
 
 append_character_to_all() {
     if [ $# -eq 1 ]

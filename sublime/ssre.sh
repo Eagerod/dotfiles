@@ -11,58 +11,66 @@
 #
 # Currently supported mechanisms:
 # - Character Sets
+# - Optional sequences - ?
 #
 # Things to support when the need arises:
-# - Optional sequences - ?
 # - Finite repeating sequences - {n,m}
 # - Ors - |
 
-append_word_to_all() {
-    if [ $# -eq 1 ]
-    then   
-        echo "$1" 
-    else
-        local word=$1
-        for i in $(seq 2 $#); 
-        do     
-           echo "${!i}$word" 
-        done
-    fi
-}
+STRING_REGEX="^([a-zA-Z]+)"
+CHARACTER_SET_REGEX="^\[([a-zA-Z]+)\]"
+OPTIONAL_REGEX="^\?"
 
+# Recurse through, and consume left-most pieces of the regular expression, 
+# passing the remainder, and a single prefixes into the next recursion.
 expand_regular_expression() {
-    local regular_expression="$1"
-    local all_wordset=()
-    local current_duplication_wordset=()
-    local duplicating=false
-    for i in $(seq 0 $((${#regular_expression}-1))) 
-    do
-        character=${regular_expression:$i:1}
-        if [ $character = "[" ]
+    local prefix=$1
+    local expression=$2
+
+    if [ -z "$expression" ]
+    then
+        echo "$prefix"
+        return
+    fi
+
+    # Just more text to print out:
+    if [[ "$expression" =~ $STRING_REGEX ]]
+    then
+        local characters="${BASH_REMATCH[1]}"
+        local remaining_expression=${expression:${#BASH_REMATCH[0]}}
+
+        if [[ "$remaining_expression" =~ $OPTIONAL_REGEX ]]
         then
-            # Duplicate entire word_builder for every character until "]"
-            duplicating=true
-            current_duplication_wordset=("${all_wordset[@]}")
-            all_wordset=()
-        elif [ $character = "]" ]
-        then
-            duplicating=false
-            current_duplication_wordset=("${all_wordset[@]}")
-        elif [ $duplicating = true ]
-        then
-            all_wordset+=($(append_word_to_all $character ${current_duplication_wordset[@]}))
-        elif [ $duplicating = false ]
-        then
-            all_wordset=($(append_word_to_all $character ${all_wordset[@]}))
+            remaining_expression=${remaining_expression:1:$((${#remaining_expression}-1))}
+            expand_regular_expression "$prefix" $remaining_expression
         fi
-    done
-    for word in ${all_wordset[@]}
-    do
-        echo $word
-    done
+
+        expand_regular_expression "$prefix$characters" "$remaining_expression"
+        return
+    fi
+
+    # If the expression is a character group:
+    if [[ "$expression" =~ $CHARACTER_SET_REGEX ]]
+    then
+        local characters="${BASH_REMATCH[1]}"
+        local remaining_expression=${expression:${#BASH_REMATCH[0]}}
+
+        if [[ "$remaining_expression" =~ $OPTIONAL_REGEX ]]
+        then
+            remaining_expression=${remaining_expression:1:$((${#remaining_expression}-1))}
+            expand_regular_expression "$prefix" $remaining_expression
+        fi
+
+        for i in $(seq 0 ${#characters[@]})
+        do
+            local character=${characters:$i:1}
+            expand_regular_expression "$prefix$character" $remaining_expression
+        done
+        return
+    fi
 }
 
 while read regular_expression
 do
-    expand_regular_expression "$regular_expression"
+    expand_regular_expression "" "$regular_expression"
 done

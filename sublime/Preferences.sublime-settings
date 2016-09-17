@@ -5,7 +5,7 @@
     "detect_indentation": true,
     "ensure_newline_at_eof_on_save": true,
     "font_size": 13.0,
-    "ignore_words": [],
+    "ignored_words": [],
     "open_files_in_new_window": false,
     "rulers":
     [

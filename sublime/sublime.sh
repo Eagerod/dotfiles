@@ -15,8 +15,8 @@ then
     jsony=${jsony:0:${#jsony}-1}
 fi
 
-sed -i '' -e 's/"ignore_words": \[.*]/"ignore_words": \['$jsony']/g' "$REL/Preferences.sublime-settings"
+sed -i '' -e 's/"ignored_words": \[.*]/"ignored_words": \['$jsony']/g' "$REL/Preferences.sublime-settings"
 
 cp "$REL/Preferences.sublime-settings" "$SUBLIME_DIR/Packages/User/"
 
-sed -i '' -e 's/"ignore_words": \[.*]/"ignore_words": \[]/g' "$REL/Preferences.sublime-settings"
+sed -i '' -e 's/"ignored_words": \[.*]/"ignored_words": \[]/g' "$REL/Preferences.sublime-settings"

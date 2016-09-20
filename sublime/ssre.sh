@@ -12,10 +12,10 @@
 # Currently supported mechanisms:
 # - Character Sets
 # - Optional sequences - ?
+# - Ors - |
 #
 # Things to support when the need arises:
 # - Finite repeating sequences - {n,m}
-# - Ors - |
 
 STRING_REGEX="^([a-zA-Z]+)"
 CHARACTER_SET_REGEX="^\[([a-zA-Z]+)\]"
@@ -67,6 +67,41 @@ expand_regular_expression() {
             expand_regular_expression "$prefix$character" $remaining_expression
         done
         return
+    fi
+
+    # Find the closing parenthesis of this group, and recursively handle whatever's found.
+    if [ "${expression:0:1}" = "(" ]
+    then
+        local open_brackets=1
+        for index in $(seq 1 ${#expression})
+        do
+            if [ ${expression:$index:1} = "(" ]
+            then
+                open_brackets=$((open_brackets+1))
+            elif [ ${expression:$index:1} = ")" ] 
+            then
+                open_brackets=$((open_brackets-1))
+            fi
+
+            if [ $open_brackets -eq 0 ]
+            then
+                break
+            fi
+        done
+
+        local group=${expression:1:$((index-1))}
+        local remaining_expression=${expression:$((index+1))}
+
+        if [[ "$remaining_expression" =~ $OPTIONAL_REGEX ]]
+        then
+            remaining_expression=${remaining_expression:1:$((${#remaining_expression}-1))}
+            expand_regular_expression "$prefix" $remaining_expression
+        fi
+
+        for partial_expression in ${group//|/ }
+        do
+            expand_regular_expression $prefix$partial_expression $remaining_expression
+        done
     fi
 }
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+#
+# Show all the files opened by the preferences daemon.
+# Useful when trying to figure out which files are affected by changing values
+# in the different preference panes.
+
+sudo fs_usage | grep cfprefsd | grep open

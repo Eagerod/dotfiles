@@ -1,12 +1,16 @@
+APP_INSTALLATION_DIRECTORIES=(
+    '/Applications'
+    '/usr/local/Caskroom'
+)
+
 clear_dock() {
     defaults write com.apple.dock persistent-apps -array
     defaults write com.apple.dock persistent-others -array
 }
 
 add_app_to_dock() {
-    fileroot=$1
-    filename=$2
-    filepath="file://"`find $1 -maxdepth 2 -iname "$2"`
+    filename=$1
+    filepath="file://"`find ${APP_INSTALLATION_DIRECTORIES[@]} -maxdepth 3 -iname "$filename"`
     url_string="<key>_CFURLString</key><string>$filepath</string>"
     url_string_type="<key>_CFURLStringType</key><integer>15</integer>"
     file_data="<key>file-data</key><dict>$url_string$url_string_type</dict>"
@@ -34,20 +38,20 @@ add_app_spacer_to_dock() {
 clear_dock
 
 # Always on apps.
-add_app_to_dock "/opt/homebrew-cask/Caskroom/spotify" "Spotify.app"
-add_app_to_dock "/Applications" "Messages.app"
-add_app_to_dock "/opt/homebrew-cask/Caskroom/sublime-text" "Sublime Text 2.app"
-add_app_to_dock "/Applications" "Xcode.app"
-add_app_to_dock "/Applications" "Terminal.app"
+add_app_to_dock "Spotify.app"
+add_app_to_dock "Messages.app"
+add_app_to_dock "Sublime Text*.app"
+add_app_to_dock "Xcode.app"
+add_app_to_dock "Terminal.app"
 if type charm > /dev/null 2> /dev/null; then
-    add_app_to_dock "/opt/homebrew-cask/Caskroom/pycharm" "PyCharm.app"
+    add_app_to_dock "PyCharm.app"
 fi
 
 add_app_spacer_to_dock
 
 # Usually on apps.
-add_app_to_dock "/Applications" "Google Chrome.app"
-add_app_to_dock "/opt/homebrew-cask/Caskroom/slack" "Slack.app"
+add_app_to_dock "Google Chrome.app"
+add_app_to_dock "Slack.app"
 
 add_app_spacer_to_dock
 

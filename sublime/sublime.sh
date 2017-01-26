@@ -1,4 +1,11 @@
-SUBLIME_DIR=$(find ~/Library/Application\ Support -type d -maxdepth 1 -iname "Sublime Text*" -print)
+#!/usr/bin/env bash
+
+if [[ "$(uname)" == "Darwin" ]];
+then
+	SUBLIME_DIR=$(find ~/Library/Application\ Support -maxdepth 1 -type d -iname "Sublime Text*" -print)
+else
+	SUBLIME_DIR=$(find ~/.config -maxdepth 1 -type d -iname "sublime-text*" -print)
+fi
 
 REL=`dirname $0`
 
@@ -6,7 +13,7 @@ curl "https://packagecontrol.io/Package%20Control.sublime-package" > "$SUBLIME_D
 cp "$REL/Package Control.sublime-settings" "$SUBLIME_DIR/Packages/User/"
 
 # Build up the ignore_words set.
-jsony=$(cat "$REL/ignored_words.txt" | sh "$REL/ssre.sh" | awk '{ print "\""$1"\"," }')
+jsony=$(cat "$REL/ignored_words.txt" | bash "$REL/ssre.sh" | awk '{ print "\""$1"\"," }')
 jsony=$(echo $jsony | sed 's/ //g')
 
 # Ditch the trailing comma
@@ -15,8 +22,12 @@ then
     jsony=${jsony:0:${#jsony}-1}
 fi
 
-sed -i '' -e 's/"ignored_words": \[.*]/"ignored_words": \['$jsony']/g' "$REL/Preferences.sublime-settings"
-
 cp "$REL/Preferences.sublime-settings" "$SUBLIME_DIR/Packages/User/"
 
-sed -i '' -e 's/"ignored_words": \[.*]/"ignored_words": \[]/g' "$REL/Preferences.sublime-settings"
+
+if [[ "$(uname)" == "Darwin" ]];
+then
+    sed -i '' -e 's/"ignored_words": \[.*]/"ignored_words": \['$jsony']/g' "$SUBLIME_DIR/Packages/User/Preferences.sublime-settings"
+else
+    sed -i'' -e 's/"ignored_words": \[.*]/"ignored_words": \['$jsony']/g' "$SUBLIME_DIR/Packages/User/Preferences.sublime-settings"
+fi

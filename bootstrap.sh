@@ -7,7 +7,7 @@ sh defaults/defaults.sh
 
 duti duti/duti # Lol
 
-sh bash/bash_profile.sh
+bash bash/bash_profile.sh
 
 cp git/gitconfig ~/.gitconfig
 cp git/gitignore ~/.gitignore

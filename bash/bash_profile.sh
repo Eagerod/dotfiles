@@ -19,4 +19,3 @@ do
         echo $line >> ~/.bash_profile
     fi
 done
-

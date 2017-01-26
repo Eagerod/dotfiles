@@ -9,7 +9,7 @@ fi
 
 REL=`dirname $0`
 
-curl "https://packagecontrol.io/Package%20Control.sublime-package" > "$SUBLIME_DIR/Installed Packages/Package Control.sublime-package"
+curl -s "https://packagecontrol.io/Package%20Control.sublime-package" > "$SUBLIME_DIR/Installed Packages/Package Control.sublime-package"
 cp "$REL/Package Control.sublime-settings" "$SUBLIME_DIR/Packages/User/"
 
 # Build up the ignore_words set.

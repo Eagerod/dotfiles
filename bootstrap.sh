@@ -8,6 +8,8 @@ then
 	sh defaults/defaults.sh
 
 	duti duti/duti # Lol
+else
+    sh apt/apt.sh
 fi
 
 bash bash/bash_profile.sh

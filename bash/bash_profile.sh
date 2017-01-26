@@ -9,6 +9,14 @@ desired_lines=(
     "alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'"
 )
 
+if [[ "$(uname)" == "Linux" ]];
+then
+    desired_lines+=(
+        "alias pbcopy='xclip -selection clipboard'"
+        "alias pbpaste='xclip -selection clipboard -o'"
+    )
+fi
+
 touch ~/.bash_profile
 
 for ((i = 0; i < ${#desired_lines[@]}; ++i))

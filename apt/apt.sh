@@ -18,5 +18,7 @@ sudo apt-get install heroku
 sudo apt-get install nodejs-legacy
 sudo apt-get install mongodb
 sudo apt-get install texlive-full
+sudo apt-get install xclip
 
 sudo apt-get install sublime-text
+sudo -k

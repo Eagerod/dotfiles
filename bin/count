@@ -12,9 +12,10 @@ do_program() {
         for exclude in ${excludes[@]}; do
             excludes_string=$(printf '%s' "$excludes_string -path */$exclude -o")
         done
-        excludes_string="${excludes_string%??}"
-        excludes_string="( $excludes_string ) -prune -o"
     fi
+
+    excludes_string="$excludes_string -path ./.git"
+    excludes_string="( $excludes_string ) -prune -o"
 
     if [ ${#filetypes[@]} -gt 0 ]; then
         for filetype in ${filetypes[@]}; do
@@ -25,7 +26,7 @@ do_program() {
     fi
 
     set -f
-    find . $excludes_string $filetypes_string -print0 | xargs -0 wc -l
+    find . $excludes_string $filetypes_string -type f -print0 | xargs -0 wc -l
 }
 
 while [ $# -gt 0 ]; do

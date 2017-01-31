@@ -21,4 +21,7 @@ sudo apt-get install texlive-full
 sudo apt-get install xclip
 
 sudo apt-get install sublime-text
+
+# http://stackoverflow.com/questions/18130164
+sudo ln -s `which nodejs` /usr/bin/node
 sudo -k

@@ -24,4 +24,15 @@ sudo apt-get install sublime-text
 
 # http://stackoverflow.com/questions/18130164
 sudo ln -s `which nodejs` /usr/bin/node
+
+# And then the odd thing that isn't properly managed in apt.
+# Might as well just have them all in the same installer script.
+mkdir ngrok-unzip
+cd ngrok-unzip
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip ngrok-stable-linux-amd64.zip
+mv ngrok /usr/local/bin/
+cd ..
+rm -rf ngrok-unzip
+
 sudo -k

@@ -7,9 +7,10 @@ then
 	sh defaults/dock.sh
 	sh defaults/defaults.sh
 
-	duti duti/duti # Lol
+	duti file-associations/duti
 else
     sh apt/apt.sh
+    sh file-associations/gnome.sh
 fi
 
 bash bash/bash_profile.sh

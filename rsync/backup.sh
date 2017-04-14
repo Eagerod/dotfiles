@@ -12,12 +12,8 @@ do_backup() {
     # Escape spaces
     local_path="$1"
     remote_path=$(echo $2 | sed 's/ /\\ /g')
-    rsync -ahuDH --progress --exclude-from=.rsync_exclude "$local_path" "rsync@$remote_host:/share$remote_path"
+    rsync -ahuDH --progress --exclude-from="$HOME/.gitignore" "$local_path" "rsync@$remote_host:/share$remote_path"
 }
-
-echo "*.DS_Store" > ".rsync_exclude"
-echo "*/.git/*" >> ".rsync_exclude"
-echo ".rsync_exclude" >> ".rsync_exclude"
 
 # Sync Steam Libraries to NAS
 echo "Syncing Steam library"
@@ -41,4 +37,3 @@ do_backup "$HOME/Dropbox" "/backups/"
 echo "Syncing old Xcode Archives"
 do_backup "$HOME/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
 
-rm ".rsync_exclude"

@@ -1,16 +1,18 @@
 #!/bin/sh
 
-if [ $# -ne 2 ]; then
-    echo "Usage: backup.sh <server ip> <password>"
+if [ $# -ne 1 ]; then
+    echo "Usage: backup.sh <server ip>"
     exit 1
 fi
 
 # "Session" variables to clean up the script.
-ip_address=$1
-export RSYNC_PASSWORD=$2
+remote_host=$1
 
 do_backup() {
-    rsync -ahuDH --progress --exclude-from=.rsync_exclude "$1" "rsync://rsync@$ip_address:$2"
+    # Escape spaces
+    local_path="$1"
+    remote_path=$(echo $2 | sed 's/ /\\ /g')
+    rsync -ahuDH --progress --exclude-from=.rsync_exclude "$local_path" "rsync@$remote_host:/share$remote_path"
 }
 
 echo "*.DS_Store" > ".rsync_exclude"
@@ -40,4 +42,3 @@ echo "Syncing old Xcode Archives"
 do_backup "$HOME/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
 
 rm ".rsync_exclude"
-unset RSYNC_PASSWORD

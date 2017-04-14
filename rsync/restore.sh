@@ -1,23 +1,23 @@
 #!/bin/sh
 
-if [ $# -ne 2 ]; then
-    echo "Usage: restore.sh <server ip> <password>"
+if [ $# -ne 1 ]; then
+    echo "Usage: restore.sh <server ip>"
     exit 1
 fi
 
 # "Session" variables to clean up the script.
-ip_address=$1
-export RSYNC_PASSWORD=$2
+remote_host=$1
 
 do_restore() {
-    rsync -ahuDH --progress "rsync://rsync@$ip_address:$1" "$2"
+    # Escape spaces
+    local_path="$2"
+    remote_path=$(echo $1 | sed 's/ /\\ /g')
+    rsync -ahuDH --progress "rsync@$remote_host:/share$remote_path" "$local_path"
 }
 
 echo "Restoring Documents and Desktop. All other backups should be restored manually."
 
 # Sync Home Directory Contents back to the Mac
-clear; echo "Syncing ~ directories"
+echo "Syncing ~ directories"
 do_restore "/backups/Documents/" "$HOME/Documents/" 
 do_restore "/backups/MacDesktop/" "$HOME/Desktop/" 
-
-unset RSYNC_PASSWORD

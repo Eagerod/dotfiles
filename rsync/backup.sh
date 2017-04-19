@@ -1,18 +1,19 @@
 #!/bin/sh
 
-if [ $# -ne 1 ]; then
-    echo "Usage: backup.sh <server ip>"
+if ! ping -c 1 "$1" > /dev/null; then
+    echo "Usage: backup.sh <server ip> [RSYNC OPTIONS]"
     exit 1
 fi
 
 # "Session" variables to clean up the script.
 remote_host=$1
+additional_parameters="${@:2}"
 
 do_backup() {
     # Escape spaces
     local_path="$1"
     remote_path=$(echo $2 | sed 's/ /\\ /g')
-    rsync -ahuDH --progress --exclude-from="$HOME/.gitignore" "$local_path" "rsync@$remote_host:/share$remote_path"
+    rsync -ahuDH --progress "$additional_parameters" --exclude-from="$HOME/.gitignore" "$local_path" "rsync@$remote_host:/share$remote_path"
 }
 
 # Sync Steam Libraries to NAS

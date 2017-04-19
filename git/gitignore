@@ -17,3 +17,8 @@ obj/
 *.mode2v3
 *.perspectivev3
 *xcshareddata/
+
+# Node project dependencies and other node stuff
+node_modules/
+bower_components/
+npm-debug.log

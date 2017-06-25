@@ -1,5 +1,6 @@
 # Sublime should open all plain text files.
 com.sublimetext.3 public.plain-text                  all
+com.sublimetext.3 public.text                        all
 com.sublimetext.3 public.comma-separated-values-text all
 com.sublimetext.3 public.source-code                 all
 com.sublimetext.3 public.script                      all

@@ -60,3 +60,5 @@ do_backup "$HOME/Dropbox" "/backups/"
 echo "Syncing old Xcode Archives"
 do_backup "$HOME/Library/Developer/Xcode/Archives" "/backups/XcodeArchives"
 
+echo "Syncing MongoDB databases"
+do_backup "/usr/local/var/mongodb/" "/backups/mongodb"

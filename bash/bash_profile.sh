@@ -16,6 +16,12 @@ then
         "alias pbcopy='xclip -selection clipboard'"
         "alias pbpaste='xclip -selection clipboard -o'"
     )
+elif [[ "$(uname)" == "Darwin" ]];
+then
+    desired_lines+=(
+        "alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'"
+        "alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'"
+    )
 fi
 
 touch ~/.bash_profile
@@ -25,6 +31,6 @@ do
     line=${desired_lines[$i]}
     if ! $(grep -q "$line" ~/.bash_profile)
     then
-        echo $line >> ~/.bash_profile
+        echo "$line" >> ~/.bash_profile
     fi
 done

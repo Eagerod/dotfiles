@@ -15,8 +15,7 @@ fi
 
 bash bash/bash_profile.sh
 
-cp git/gitconfig ~/.gitconfig
-cp git/gitignore ~/.gitignore
+bash git/git.sh
 
 bash sublime/sublime.sh
 

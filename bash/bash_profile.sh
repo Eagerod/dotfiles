@@ -8,6 +8,7 @@ desired_lines=(
     "alias sublime='subl'"
     "alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'"
     "alias me='cd ~/Documents/PersonalProjects'"
+    "source ~/.git-completion.bash"
 )
 
 if [[ "$(uname)" == "Linux" ]];

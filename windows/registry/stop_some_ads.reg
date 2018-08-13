@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+; Prevent some "Subscribed Content"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SubscribedContentEnabled"=dword:00000000
+

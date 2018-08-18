@@ -5,33 +5,41 @@
 #   packages are cluttering a fresh system.
 
 # Uninstall default bundled games
-Get-AppxPackage 828B5831* | remove-appxpackage
-get-appxpackage A278AB0D* | remove-appxpackage
-get-appxpackage Nordcurrent* | remove-appxpackage
-get-appxpackage king.com* | remove-appxpackage
+Get-AppxPackage 828B5831* | Remove-AppxPackage
+Get-AppxPackage A278AB0D* | Remove-AppxPackage
+Get-AppxPackage Nordcurrent* | Remove-AppxPackage
+Get-AppxPackage king.com* | Remove-AppxPackage
+Get-AppxPackage Microsoft.MicrosoftSolitaireCollection | Remove-AppxPackage
 
 # Uninstall all store, zune, bing, and xbox packages (General Microsoft services)
-get-appxpackage *bing* | remove-appxpackage
-get-appxpackage *store* | remove-appxpackage
-get-appxpackage *zune* | remove-appxpackage
-get-appxpackage *xbox* | remove-appxpackage
+Get-AppxPackage *bing* | Remove-AppxPackage
+Get-AppxPackage *store* | Remove-AppxPackage
+Get-AppxPackage *zune* | Remove-AppxPackage
+Get-AppxPackage *xbox* | Remove-AppxPackage
 
-# Uninstall everything from the Office suite (commented out in case it's installed on purpose.
-# get-appxpackage Microsoft.Office* | remove-appxpackage
+# Uninstall everything from the Office suite (commented out in case it's installed on purpose).
+# Get-AppxPackage Microsoft.Office* | Remove-AppxPackage
 
 # Uninstall other Windows/Microsoft packages that don't seem super useful
-get-appxpackage Microsoft.Advertising* | remove-appxpackage
-get-appxpackage Microsoft.Wallet | remove-appxpackage
-get-appxpackage Microsoft.Messaging | remove-appxpackage
-get-appxpackage Microsoft.Microsoft3DViewer | remove-appxpackage
-get-appxpackage Microsoft.Print3D | remove-appxpackage
-get-appxpackage Microsoft.OneConnect | remove-appxpackage
-get-appxpackage Microsoft.WindowsMaps | remove-appxpackage
-get-appxpackage Microsoft.WebMediaExtensions | remove-appxpackage
-get-appxpackage Microsoft.People | remove-appxpackage
-get-appxpackage Microsoft.WindowsCamera | remove-appxpackage
-get-appxpackage WindowsFeedbackHub | remove-appxpackage
-get-appxpackage Microsoft.MicrosoftOfficeHub | remove-appxpackage
-get-appxpackage DesktopAppInstaller | remove-appxpackage
-get-appxpackage Microsoft.MicrosoftStickyNotes | remove-appxpackage
-get-appxpackage Microsoft.WindowsPhone | remove-appxpackage
+# Ordering should allow for this to only be run once to get everything, but
+#   there may be odd dependencies that will require this to be run multiple
+#   times.
+Get-AppxPackage microsoft.windowscommunicationsapps | Remove-AppxPackage
+Get-AppxPackage Microsoft.Advertising* | Remove-AppxPackage
+Get-AppxPackage Microsoft.Wallet | Remove-AppxPackage
+Get-AppxPackage Microsoft.Messaging | Remove-AppxPackage
+Get-AppxPackage Microsoft.Microsoft3DViewer | Remove-AppxPackage
+Get-AppxPackage Microsoft.Print3D | Remove-AppxPackage
+Get-AppxPackage Microsoft.OneConnect | Remove-AppxPackage
+Get-AppxPackage Microsoft.WindowsMaps | Remove-AppxPackage
+Get-AppxPackage Microsoft.WebMediaExtensions | Remove-AppxPackage
+Get-AppxPackage Microsoft.People | Remove-AppxPackage
+Get-AppxPackage Microsoft.WindowsCamera | Remove-AppxPackage
+Get-AppxPackage WindowsFeedbackHub | Remove-AppxPackage
+Get-AppxPackage Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
+Get-AppxPackage DesktopAppInstaller | Remove-AppxPackage
+Get-AppxPackage Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
+Get-AppxPackage Microsoft.WindowsPhone | Remove-AppxPackage
+Get-AppxPackage Microsoft.WindowsDVDPlayer | Remove-AppxPackage
+Get-AppxPackage Microsoft.GetHelp | Remove-AppxPackage
+

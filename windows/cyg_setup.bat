@@ -10,3 +10,6 @@ C:\cygwin64\bin\bash --login -c '^
 		-O /usr/local/bin/apt-cyg; ^
 	chmod 755 /usr/local/bin/apt-cyg; ^
 	python -m pip install -U pip'
+
+for /f %%i in ('C:\cygwin64\bin\bash --login -c "cygpath -w $(PWD)"') do set CYG_HOME=%%i
+powershell -ExecutionPolicy ByPass -File create-cygwin-shortcut.ps1 %CYG_HOME%

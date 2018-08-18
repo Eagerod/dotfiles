@@ -23,6 +23,10 @@ then
         "alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'"
         "alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'"
     )
+elif uname | grep -iq cygwin; then
+	desired_lines+=(
+		"alias open='cmd /c start'"
+	)
 fi
 
 touch ~/.bash_profile

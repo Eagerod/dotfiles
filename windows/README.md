@@ -7,12 +7,6 @@ Instead of these being provided in bootstrap.sh, these will likely have to be in
 
 ## Clean up base installation
 
-To run the clean sweeper (powershell-deleter.ps1) run the following in an elevated permissions powershell:
-```
-powershell -ExecutionPolicy ByPass -File powershell-deleter.ps1
-```
-Windows usually has a default PowerShell execution policy that prevents running PowerShell scripts.
-
 Content can be added to this script as needed by investigating the contents of
 ```
 Get-AppxPackage | Select Name, PackageFullName

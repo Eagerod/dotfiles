@@ -6,3 +6,4 @@ choco install -y abodereader
 choco install -y Cygwin
 choco install -y notepadplusplus
 choco install -y resilio-sync-home
+choco install -y dropbox

@@ -1,0 +1,1 @@
+uuidgen | awk '{print tolower($1)}'

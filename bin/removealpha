@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if [ $# -ne 2 ]; then
+	echo >&2 "usage: $0 <srcpath> <destpath>"
+	exit
+fi
+
+# Remove alpha from an image.
+convert "$1" -alpha off "$2"

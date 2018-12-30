@@ -17,7 +17,7 @@
     this-branch = rev-parse --abbrev-ref HEAD
     branch-prune = "!git branch --merged | grep -v \\* | xargs -n 1 git branch -d"
 [core]
-    editor = nano
+    editor = vim
     excludesfile = ~/.gitignore
 [merge]
     tool = opendiff

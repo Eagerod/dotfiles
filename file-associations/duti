@@ -1,6 +1,7 @@
 # Sublime should open all plain text files.
 com.sublimetext.3 public.plain-text                  all
 com.sublimetext.3 public.text                        all
+com.sublimetext.3 public.tex                         all
 com.sublimetext.3 public.comma-separated-values-text all
 com.sublimetext.3 public.source-code                 all
 com.sublimetext.3 public.script                      all
@@ -10,3 +11,6 @@ com.sublimetext.3 net.daringfireball.markdown        all
 
 # Set up a bunch of video files to open with VLC.
 org.videolan.vlc  public.movie                       all
+
+# Sequel pro apparently has its own UTI that it attaches to SQL files?
+com.sublimetext.3 com.sequelpro.sequelpro.sql        all

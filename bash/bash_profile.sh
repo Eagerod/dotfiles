@@ -9,6 +9,7 @@ desired_lines=(
     "alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'"
     "alias me='cd ~/Documents/PersonalProjects'"
     "source ~/.git-completion.bash"
+    "source ~/.git-prompt.sh"
 )
 
 if [[ "$(uname)" == "Linux" ]];

@@ -52,10 +52,31 @@ if [ $d_y_dim -gt $y_dim ]; then
     exit 4
 fi
 
-for gravity in "North" "South" "East" "West"; do
-    processed_path="$PROCESSED_FILES_DIR/${output_filename_next}_${gravity}_$1.$output_extension"
+# Check the ratios of the image's dimensions to the intended ratio.
+#   If the image has a wider aspect ratio, take horizontal aligned cuts
+#   If the image has a taller aspect ratio, take vertically aligned cuts.
+d_ar=$(echo "$d_x_dim / $d_y_dim" | bc -l)
+ar=$(echo "$x_dim / $y_dim" | bc -l)
+
+if (( $(echo "$d_ar < $ar" | bc -l) )); then
+    gravities=("East" "West" "Center")
+else
+    gravities=("North" "South" "Center")
+fi
+
+for gravity in ${gravities[@]}; do
+    processed_path="$PROCESSED_FILES_DIR/${output_filename_next}_Scaled_${gravity}_$1.$output_extension"
     if [ -f $processed_path ]; then
         continue
     fi
     convert $output_path -gravity $gravity -scale $1^ -extent $1 $processed_path
+done
+
+# Create unscaled images
+for gravity in "North" "NorthEast" "NorthWest" "South" "SouthEast" "SouthWest" "East" "West" "Center"; do
+    processed_path="$PROCESSED_FILES_DIR/${output_filename_next}_${gravity}_$1.$output_extension"
+    if [ -f $processed_path ]; then
+        continue
+    fi
+    convert $output_path -gravity $gravity -extent $1 $processed_path
 done

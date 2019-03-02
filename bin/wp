@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#
+# Download an image from the Internet, and create copies of it with the
+#  specified dimensions.
+
+DIMENSIONS_REGEX="^[0-9]+x[0-9]+$"
+SOURCE_FILES_DIR="$HOME/wallpaper_originals"
+PROCESSED_FILES_DIR="$HOME/wallpaper_edited"
+
+usage() {
+    echo >&2 "Usage: $0 <dimensions> <url>"
+}
+
+if [ $# -ne 2 ]; then
+    usage
+    exit -1
+fi
+
+if [[ ! $1 =~ $DIMENSIONS_REGEX ]]; then
+    echo >&2 "Dimensions are not valid"
+    usage
+    exit -1
+fi
+
+mkdir -p $SOURCE_FILES_DIR
+mkdir -p $PROCESSED_FILES_DIR
+
+# Check to see if this source file has already been downloaded
+output_filename=$(basename $2)
+output_extension="${output_filename##*.}"
+output_filename_next="${output_filename%.*}"
+output_path="$SOURCE_FILES_DIR/$output_filename"
+if [ ! -f "$output_path" ]; then
+    curl -sSL $2 -o $output_path
+fi
+
+for gravity in "North" "South" "East" "West"; do
+    processed_path="$PROCESSED_FILES_DIR/${output_filename_next}_${gravity}_$1.$output_extension"
+    if [ -f $processed_path ]; then
+        continue
+    fi
+    convert $output_path -gravity $gravity -scale $1^ -extent $1 $processed_path
+done

@@ -3,7 +3,7 @@
 # Download an image from the Internet, and create copies of it with the
 #  specified dimensions.
 
-DIMENSIONS_REGEX="^[0-9]+x[0-9]+$"
+DIMENSIONS_REGEX="^([0-9]+)x([0-9]+)$"
 SOURCE_FILES_DIR="$HOME/wallpaper_originals"
 PROCESSED_FILES_DIR="$HOME/wallpaper_edited"
 
@@ -13,14 +13,17 @@ usage() {
 
 if [ $# -ne 2 ]; then
     usage
-    exit -1
+    exit 1
 fi
 
 if [[ ! $1 =~ $DIMENSIONS_REGEX ]]; then
     echo >&2 "Dimensions are not valid"
     usage
-    exit -1
+    exit 2
 fi
+
+d_x_dim=${BASH_REMATCH[1]}
+d_y_dim=${BASH_REMATCH[2]}
 
 mkdir -p $SOURCE_FILES_DIR
 mkdir -p $PROCESSED_FILES_DIR
@@ -32,6 +35,21 @@ output_filename_next="${output_filename%.*}"
 output_path="$SOURCE_FILES_DIR/$output_filename"
 if [ ! -f "$output_path" ]; then
     curl -sSL $2 -o $output_path
+fi
+
+# Check the dimensions on the downloaded file, and depending on its dimensions,
+#   choose what different slices of the image to take.
+x_dim=$(sips -g pixelWidth $output_path | tail -1 | awk '{print $2}')
+y_dim=$(sips -g pixelHeight $output_path | tail -1 | awk '{print $2}')
+
+if [ $d_x_dim -gt $x_dim ]; then
+    echo "Input image is not wide enough to create quality output images"
+    exit 3
+fi
+
+if [ $d_y_dim -gt $y_dim ]; then
+    echo "Input image is not tall enough to create quality output images"
+    exit 4
 fi
 
 for gravity in "North" "South" "East" "West"; do

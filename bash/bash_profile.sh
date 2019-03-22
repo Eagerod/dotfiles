@@ -7,7 +7,7 @@
 desired_lines=(
     "alias sublime='subl'"
     "alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'"
-    "alias me='cd ~/Documents/PersonalProjects'"
+    "alias me='cd ~/Documents/personal/projects'"
     "source ~/.git-completion.bash"
     "source ~/.git-prompt.sh"
 )

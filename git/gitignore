@@ -25,3 +25,7 @@ npm-debug.log
 
 # Python residuals
 *.pyc
+
+# Sublime things
+*.sublime-project
+*.sublime-workspace

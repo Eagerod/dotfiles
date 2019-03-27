@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+#
+# Script for getting the UTI of a file so it's easier to feed it into duti.
+
+usage() {
+    echo >&2 "  usage: $0 [-a|--all] <filename>"
+}
+
+print_all=false
+
+while [ $# -gt 1 ]; do
+    case $1 in
+        -a|--all)
+            print_all=true
+            shift
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+all_utis=$(mdls -raw -name kMDItemContentTypeTree "$1")
+
+if [ "$print_all" == "true" ]; then
+    echo $all_utis | sed -E 's/[[:blank:]]/\
+/g' | sed -E 's/"(.*)",?/\1/' | sed '1d;$d'
+else
+    echo $all_utis | awk '{print $2}' | sed -E 's/"(.*)",?/\1/'
+fi

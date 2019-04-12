@@ -28,5 +28,5 @@ then
 fi
 
 find bin -mindepth 1 -maxdepth 1 -print | sed 's:^bin/::' | while read line; do
-    ln -s $DOTFILES_DIR/bin/$line /usr/local/bin/$line
+    ln -s $DOTFILES_DIR/bin/$line /usr/local/bin/$line 2> /dev/null
 done

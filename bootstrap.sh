@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR=$(dirname $0)
-
 if [[ "$(uname)" == "Darwin" ]];
 then
 	sh brew/brew.sh
@@ -27,6 +25,4 @@ then
     sudo chown $(whoami) /usr/local/bin
 fi
 
-find bin -mindepth 1 -maxdepth 1 -print | sed 's:^bin/::' | while read line; do
-    ln -s $DOTFILES_DIR/bin/$line /usr/local/bin/$line 2> /dev/null
-done
+bash bin/bin.sh

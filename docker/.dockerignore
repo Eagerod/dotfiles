@@ -28,6 +28,8 @@ docker-compose.yaml
 .gitlab-ci.yaml
 .travis.yml
 .travis.yaml
+.drone.yml
+.drone.yaml
 
 # General project files
 README.md

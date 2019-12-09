@@ -1,0 +1,26 @@
+MY_PROJECTS_DIR="$HOME/Documents/personal/projects"
+
+alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'
+alias me="cd $MY_PROJECTS_DIR"
+alias wipe='clear && printf "\e[3J"'
+
+source ~/.git-completion.bash
+source ~/.git-prompt.sh
+
+if [ "$(uname)" == "Linux" ]; then
+    alias pbcopy='xclip -selection clipboard'
+    alias pbpaste='xclip -selection clipboard -o'
+elif [ "$(uname)" == "Darwin" ]; then
+    alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'
+    alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
+fi
+
+if [ ! -z "$(git -C $MY_PROJECTS_DIR/dotfiles status --porcelain)" ]; then 
+    echo "Dotfiles have changed..."
+fi
+
+# Provided to explicitly have custom behaviour on machines used for different
+#   purposes.
+if [ -f ~/.bash_profile_extra ]; then
+    source ~/.bash_profile_extra
+fi

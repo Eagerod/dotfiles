@@ -13,7 +13,7 @@ else
     sh file-associations/gnome.sh
 fi
 
-bash bash/bash_profile.sh
+bash bash/bash.sh
 
 bash git/git.sh
 

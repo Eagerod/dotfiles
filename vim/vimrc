@@ -1,0 +1,8 @@
+set number
+set ruler
+set hlsearch
+syntax enable
+set lbr
+set lw=80
+set cc=80
+set wrap

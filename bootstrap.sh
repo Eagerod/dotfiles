@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ "$(uname)" == "Darwin" ]];
-then
+if [ "$(uname)" == "Darwin" ]; then
 	sh brew/brew.sh
 
 	sh defaults/dock.sh
@@ -14,13 +13,12 @@ else
 fi
 
 bash bash/bash.sh
-
 bash git/git.sh
+bash vim/vim.sh
 
 bash sublime/sublime.sh
 
-if [[ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]];
-then
+if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then
     echo "/usr/local/bin not writeable, please provide permissions:"
     sudo chown $(whoami) /usr/local/bin
 fi

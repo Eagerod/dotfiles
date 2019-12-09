@@ -6,6 +6,7 @@ Aleem
 [Ee]agerod
 Elasticsearch
 Firehose
+[Gg]eoreferenc(e|ed|ing)
 Haji
 Kibana
 Kinesis

@@ -1,7 +1,10 @@
-REL=`dirname $0`
+#!/usr/bin/env sh
 
-cp "$REL/gitconfig" ~/.gitconfig
-cp "$REL/gitignore" ~/.gitignore
+DST_DIR=$HOME
+SRC_DIR=$(cd $(dirname $0) && pwd)
+
+ln -s "${SRC_DIR}/gitconfig" "${DST_DIR}/.gitconfig"
+ln -s "${SRC_DIR}/gitignore" "${DST_DIR}/.gitignore"
 
 # Intentionally update, in case git was updated since the last time this was run.
 git_version="v$(git version | awk '{print $NF }')"

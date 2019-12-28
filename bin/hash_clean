@@ -6,7 +6,7 @@
 #   can be given with -c
 
 usage() {
-	echo "$0 [-c hash_command] search_dir hashes.txt"
+    echo "$0 [-c hash_command] search_dir hashes.txt"
 }
 
 hash_command=shasum
@@ -20,23 +20,23 @@ while [ $# -gt 0 ]; do
             ;;
         *)
             find_dir=$1
-			hashes=$2
-			shift
+            hashes=$2
+            shift
             shift
             ;;
     esac
 done
 
 if [ -z "$find_dir" ] || [ -z "$hashes" ]; then
-	usage >&2
-	exit 1
+    usage >&2
+    exit 1
 fi
 
 find "$find_dir" -type f | sed "s:$find_dir/::" | while read line; do
-	grepper=$($hash_command "$find_dir/$line" | sed "s:$find_dir/::")
-	if grep "$grepper" "$hashes" > /dev/null; then
-		rm "$find_dir/$line"
-	else
-		echo >&2 "$grepper not found"
-	fi
+    grepper=$($hash_command "$find_dir/$line" | sed "s:$find_dir/::")
+    if grep "$grepper" "$hashes" > /dev/null; then
+        rm "$find_dir/$line"
+    else
+        echo >&2 "$grepper not found"
+    fi
 done

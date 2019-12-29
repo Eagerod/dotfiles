@@ -27,9 +27,18 @@ while [ $# -gt 0 ]; do
     esac
 done
 
+
 if [ -z "$find_dir" ] || [ -z "$hashes" ]; then
     usage >&2
     exit 1
+fi
+
+hash_bin=$(echo $hash_command | awk '{print $1}')
+if ! which $hash_bin > /dev/null; then
+	echo >&2 "Cannot find $hash_bin."
+	echo >&2 "Please provide a different command with -c"
+	usage >&2
+	exit 2
 fi
 
 find "$find_dir" -type f | sed "s:$find_dir/::" | while read line; do

@@ -27,6 +27,8 @@ while [ $# -gt 0 ]; do
     esac
 done
 
+# Trim possible trailing slash
+find_dir=${find_dir%/}
 
 if [ -z "$find_dir" ] || [ -z "$hashes" ]; then
     usage >&2

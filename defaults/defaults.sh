@@ -2,7 +2,10 @@
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # No .DS_Store files on network shares
-defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+# https://support.apple.com/en-us/HT1629 (Pre 10.13.x?)
+# defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+# https://support.apple.com/en-us/HT208209
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
 
 # Proper scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false

@@ -7,7 +7,7 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 # https://support.apple.com/en-us/HT208209
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
 
-# Proper scrolling
+# Trackpad behavior
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
 # Enable tabby spacey keyboard stuff

@@ -1,6 +1,9 @@
 # No iCloud documents
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
+# No .DS_Store files on network shares
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+
 # Proper scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 

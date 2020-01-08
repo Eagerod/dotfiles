@@ -1,7 +1,7 @@
 MY_PROJECTS_DIR="$HOME/Documents/personal/projects"
 
 alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'
-alias me="cd $MY_PROJECTS_DIR"
+alias me='cd "$MY_PROJECTS_DIR"'
 alias wipe='clear && printf "\e[3J"'
 
 source ~/.git-completion.bash
@@ -15,7 +15,7 @@ elif [ "$(uname)" == "Darwin" ]; then
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
 fi
 
-if [ ! -z "$(git -C $MY_PROJECTS_DIR/dotfiles status --porcelain)" ]; then 
+if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" status --porcelain)" ]; then
     echo "Dotfiles have changed..."
 fi
 

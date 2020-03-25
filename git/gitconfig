@@ -5,6 +5,8 @@
     graph = log --graph --pretty=format:'%Cred%h%Creset - %C(bold blue)<%an>%Creset %s %Cgreen(%cr)' --abbrev-commit --date=relative
     sdiff = !git diff | subl &
     sdiffc = !git diff --cached | subl &
+    ppush = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+    ppull = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
     abort = reset --hard
     log-export = log --format='%ad %B' --no-merges --reverse    
     fucking-obliterate = "!f() { git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch '"$@" --prune-empty --tag-name-filter cat -- --all; }; f"

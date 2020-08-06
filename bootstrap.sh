@@ -7,13 +7,14 @@ SCRIPT_DIR="$(cd $(dirname "$0") && pwd)"
 
 UNAME="$(uname)"
 FALLBACK_URL="https://github.com/Eagerod/dotfiles/archive/master.zip"
+README_UUID="bf56d5b8-5490-4bce-83c4-349a4546bb5a"
 
-if [ ! -d .git ]; then
+if ! grep -q "$README_UUID" "$SCRIPT_DIR/README.md"; then
 	echo >&2 "It seems like this is being run outside the repo."
 	echo >&2 "Downloading master build from GitHub and rerunning..."
 
 	temp_dir="$(mktemp -d)"
-	pushd "$temp_dir"
+	cd "$temp_dir"
 	echo "Running in $temp_dir"
 
 	# Depending on the platform, download using the program most likely to be
@@ -24,9 +25,8 @@ if [ ! -d .git ]; then
 		wget "$FALLBACK_URL" -O dotfiles.zip
 	fi
 
-	unzip dotfiles.zip
+	unzip -q dotfiles.zip
 	sh dotfiles-master/bootstrap.sh
-	popd
 	rm -rf "$temp_dir"
 
 	exit

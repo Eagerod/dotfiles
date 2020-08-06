@@ -1,5 +1,6 @@
 APP_INSTALLATION_DIRECTORIES=(
     '/Applications'
+    '/System/Applications'
     '/usr/local/Caskroom'
 )
 
@@ -10,7 +11,7 @@ clear_dock() {
 
 add_app_to_dock() {
     filename=$1
-    filepath="file://"`find ${APP_INSTALLATION_DIRECTORIES[@]} -maxdepth 3 -iname "$filename"`
+    filepath="file://$(find ${APP_INSTALLATION_DIRECTORIES[@]} -maxdepth 3 -iname "$filename")"
     url_string="<key>_CFURLString</key><string>$filepath</string>"
     url_string_type="<key>_CFURLStringType</key><integer>15</integer>"
     file_data="<key>file-data</key><dict>$url_string$url_string_type</dict>"
@@ -39,10 +40,8 @@ clear_dock
 
 # Always on apps.
 add_app_to_dock "Spotify.app"
-add_app_to_dock "Messages.app"
-add_app_to_dock "Sublime Text*.app"
-add_app_to_dock "Xcode.app"
 add_app_to_dock "Terminal.app"
+add_app_to_dock "Sublime Text*.app"
 if type charm > /dev/null 2> /dev/null; then
     add_app_to_dock "PyCharm.app"
 fi
@@ -57,7 +56,6 @@ add_app_spacer_to_dock
 
 # All transient apps go below this spacer.
 
-add_other_to_dock "$HOME/Dropbox/"
 add_other_to_dock "$HOME/Documents/"
 add_other_to_dock "$HOME/Downloads/"
 

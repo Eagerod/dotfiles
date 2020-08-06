@@ -6,6 +6,31 @@ set -e
 SCRIPT_DIR="$(cd $(dirname "$0") && pwd)"
 
 UNAME="$(uname)"
+FALLBACK_URL="https://github.com/Eagerod/dotfiles/archive/master.zip"
+
+if [ ! -d .git ]; then
+	echo >&2 "It seems like this is being run outside the repo."
+	echo >&2 "Downloading master build from GitHub and rerunning..."
+
+	temp_dir="$(mktemp -d)"
+	pushd "$temp_dir"
+	echo "Running in $temp_dir"
+
+	# Depending on the platform, download using the program most likely to be
+	#   installed.
+	if [ "$UNAME" == "Darwin" ]; then
+		curl -fsSL "$FALLBACK_URL" -o dotfiles.zip
+	else
+		wget "$FALLBACK_URL" -O dotfiles.zip
+	fi
+
+	unzip dotfiles.zip
+	sh dotfiles-master/bootstrap.sh
+	popd
+	rm -rf "$temp_dir"
+
+	exit
+fi
 
 echo >&2 "Setting up a $UNAME machine..."
 

@@ -19,7 +19,7 @@ if ! grep -q "$README_UUID" "$SCRIPT_DIR/README.md"; then
 
 	# Depending on the platform, download using the program most likely to be
 	#   installed.
-	if [ "$UNAME" == "Darwin" ]; then
+	if [ "$UNAME" = "Darwin" ]; then
 		curl -fsSL "$FALLBACK_URL" -o dotfiles.zip
 	else
 		wget "$FALLBACK_URL" -O dotfiles.zip
@@ -34,7 +34,7 @@ fi
 
 echo >&2 "Setting up a $UNAME machine..."
 
-if [ "$UNAME" == "Darwin" ]; then
+if [ "$UNAME" = "Darwin" ]; then
 	sh "$SCRIPT_DIR/brew/brew.sh"
 
 	sh "$SCRIPT_DIR/defaults/dock.sh"

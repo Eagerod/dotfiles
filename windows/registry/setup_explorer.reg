@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+; Show file extentions on all files, and show all hidden files.
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000
+"ShowSuperHidden"=dword:00000001

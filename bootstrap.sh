@@ -5,42 +5,47 @@ set -e
 
 SCRIPT_DIR="$(cd $(dirname "$0") && pwd)"
 
+FALLBACK_TARGET=master
+if [ ! -z $1 ]; then
+    FALLBACK_TARGET="$1"
+fi
+
 UNAME="$(uname)"
-FALLBACK_URL="https://github.com/Eagerod/dotfiles/archive/master.zip"
+FALLBACK_URL="https://github.com/Eagerod/dotfiles/archive/$FALLBACK_TARGET.zip"
 README_UUID="bf56d5b8-5490-4bce-83c4-349a4546bb5a"
 
 if ! grep -q "$README_UUID" "$SCRIPT_DIR/README.md"; then
-	echo >&2 "It seems like this is being run outside the repo."
-	echo >&2 "Downloading master build from GitHub and rerunning..."
+    echo >&2 "It seems like this is being run outside the repo."
+    echo >&2 "Downloading $FALLBACK_TARGET build from GitHub and rerunning..."
 
-	temp_dir="$(mktemp -d)"
-	cd "$temp_dir"
-	echo "Running in $temp_dir"
+    temp_dir="$(mktemp -d)"
+    cd "$temp_dir"
+    echo "Running in $temp_dir"
 
-	# Depending on the platform, download using the program most likely to be
-	#   installed.
-	if [ "$UNAME" = "Darwin" ]; then
-		curl -fsSL "$FALLBACK_URL" -o dotfiles.zip
-	else
-		wget "$FALLBACK_URL" -O dotfiles.zip
-	fi
+    # Depending on the platform, download using the program most likely to be
+    #   installed.
+    if [ "$UNAME" = "Darwin" ]; then
+        curl -fsSL "$FALLBACK_URL" -o dotfiles.zip
+    else
+        wget "$FALLBACK_URL" -O dotfiles.zip
+    fi
 
-	unzip -q dotfiles.zip
-	sh dotfiles-master/bootstrap.sh
-	rm -rf "$temp_dir"
+    unzip -q dotfiles.zip
+    sh dotfiles-*/bootstrap.sh
+    rm -rf "$temp_dir"
 
-	exit
+    exit
 fi
 
 echo >&2 "Setting up a $UNAME machine..."
 
 if [ "$UNAME" = "Darwin" ]; then
-	sh "$SCRIPT_DIR/brew/brew.sh"
+    sh "$SCRIPT_DIR/brew/brew.sh"
 
-	sh "$SCRIPT_DIR/defaults/dock.sh"
-	sh "$SCRIPT_DIR/defaults/defaults.sh"
+    sh "$SCRIPT_DIR/defaults/dock.sh"
+    sh "$SCRIPT_DIR/defaults/defaults.sh"
 
-	duti "$SCRIPT_DIR/file-associations/duti"
+    duti "$SCRIPT_DIR/file-associations/duti"
 else
     sh "$SCRIPT_DIR/apt/apt.sh"
     sh "$SCRIPT_DIR/file-associations/gnome.sh"

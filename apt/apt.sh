@@ -11,13 +11,13 @@ sudo apt-get update
 
 sudo apt-get install \
     curl \
-	git \
-	xclip \
+    git \
+    xclip \
     apt-transport-https \
     ca-certificates \
     gnupg-agent \
     software-properties-common \
-	sublime-text
+    sublime-text
 
 # Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -28,9 +28,9 @@ rm google-chrome-stable_current_amd64.deb
 # Docker
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/debian \
-   $(lsb_release -cs) \
-   stable"
+    "deb [arch=amd64] https://download.docker.com/linux/debian \
+    $(lsb_release -cs) \
+    stable"
 
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io

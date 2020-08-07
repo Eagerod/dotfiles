@@ -16,8 +16,13 @@ sudo apt-get install \
     apt-transport-https \
     ca-certificates \
     gnupg-agent \
-    software-properties-common \
-    sublime-text
+    software-properties-common
+
+# VS Code
+wget https://go.microsoft.com/fwlink/?LinkID=760868 -O code.deb
+sudo dpkg -i code.deb
+sudo apt-get install -f
+rm code.deb
 
 # Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

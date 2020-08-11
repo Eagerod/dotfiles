@@ -10,3 +10,4 @@ if [ "$(uname)" = "Linux" ]; then
 	create_symlink_and_backup "$DOTFILES_DIR/file-associations/mimeapps.list" "$HOME/.config/mimeapps.list"
 elif [ "$(uname)" = "Darwin" ]; then
 	duti "$SCRIPT_DIR/duti"
+fi

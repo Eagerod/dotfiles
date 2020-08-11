@@ -2,8 +2,12 @@
 #
 # Link all files in this directory, other than this file to /usr/local/bin.
 
-DEST_DIR=/usr/local/bin
 BIN_DIR="$(cd "$(dirname "$0")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname $BIN_DIR)" && pwd)"
+DEST_DIR=/usr/local/bin
+
+. "$DOTFILES_DIR/utils.sh"
+
 BIN_FILE="$(basename "$0")"
 
 find "$BIN_DIR" -mindepth 1 -maxdepth 1 -type f -print | sed "s:^${BIN_DIR}/::" | grep -v "^${BIN_FILE}$" | while read line; do
@@ -11,7 +15,5 @@ find "$BIN_DIR" -mindepth 1 -maxdepth 1 -type f -print | sed "s:^${BIN_DIR}/::" 
     if [ ! -x "$BIN_DIR/$line" ]; then
         continue
     fi
-    rm "$DEST_DIR/$line" 2> /dev/null
-    ln -s "$BIN_DIR/$line" "$DEST_DIR/$line"
+	create_symlink_and_backup "$BIN_DIR/$line" "$DEST_DIR/$line"
 done
-

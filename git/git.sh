@@ -1,10 +1,13 @@
 #!/usr/bin/env sh
 
-DST_DIR=$HOME
-SRC_DIR=$(cd $(dirname $0) && pwd)
+SCRIPT_DIR="$(cd "$(dirname $0)" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname $SCRIPT_DIR)" && pwd)"
+DEST_DIR=$HOME
 
-ln -s "${SRC_DIR}/gitconfig" "${DST_DIR}/.gitconfig"
-ln -s "${SRC_DIR}/gitignore" "${DST_DIR}/.gitignore"
+. "$DOTFILES_DIR/utils.sh"
+
+create_symlink_and_backup "$SCRIPT_DIR/gitconfig" "$DEST_DIR/.gitconfig"
+create_symlink_and_backup "$SCRIPT_DIR/gitignore" "$DEST_DIR/.gitignore"
 
 # Intentionally update, in case git was updated since the last time this was run.
 git_version="v$(git version | awk '{print $NF }')"

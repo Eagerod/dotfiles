@@ -10,6 +10,7 @@ source ~/.git-prompt.sh
 if [ "$(uname)" == "Linux" ]; then
     alias pbcopy='xclip -selection clipboard'
     alias pbpaste='xclip -selection clipboard -o'
+    alias open='xdg-open'
 elif [ "$(uname)" == "Darwin" ]; then
     alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'

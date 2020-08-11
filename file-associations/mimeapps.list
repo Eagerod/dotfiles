@@ -1,0 +1,7 @@
+[Default Applications]
+comma-separated-values=code.desktop;
+text/csv=code.desktop;
+text/plain=code.desktop;
+text/x-log=code.desktop;
+text/xml=code.desktop;
+x-comma-separated-values=code.desktop;

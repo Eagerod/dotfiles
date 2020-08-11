@@ -3,7 +3,10 @@
 # Get this machine up to snuff
 set -e
 
-SCRIPT_DIR="$(cd $(dirname "$0") && pwd)"
+EXIT_CODE_INCORRECT_PERMISSIONS=1
+
+PROJECTS_DIR="$HOME/Documents/personal/projects"
+DOTFILES_DIR="$PROJECTS_DIR/dotfiles"
 
 FALLBACK_TARGET=master
 if [ ! -z $1 ]; then
@@ -11,55 +14,81 @@ if [ ! -z $1 ]; then
 fi
 
 UNAME="$(uname)"
-FALLBACK_URL="https://github.com/Eagerod/dotfiles/archive/$FALLBACK_TARGET.zip"
-README_UUID="bf56d5b8-5490-4bce-83c4-349a4546bb5a"
+HTTPS_GIT_REMOTE="https://github.com/Eagerod/dotfiles"
+FALLBACK_URL="$HTTPS_GIT_REMOTE/archive/$FALLBACK_TARGET.zip"
 
-if ! grep -q "$README_UUID" "$SCRIPT_DIR/README.md"; then
-    echo >&2 "It seems like this is being run outside the repo."
-    echo >&2 "Downloading $FALLBACK_TARGET build from GitHub and rerunning..."
+do_dotfiles_install()
+{
+    echo >&2 "Setting up a $UNAME machine..."
 
-    temp_dir="$(mktemp -d)"
-    cd "$temp_dir"
-    echo "Running in $temp_dir"
-
-    # Depending on the platform, download using the program most likely to be
-    #   installed.
     if [ "$UNAME" = "Darwin" ]; then
-        curl -fsSL "$FALLBACK_URL" -o dotfiles.zip
+        sh "$DOTFILES_DIR/brew/brew.sh"
+
+        sh "$DOTFILES_DIR/defaults/dock.sh"
+        sh "$DOTFILES_DIR/defaults/defaults.sh"
     else
-        wget "$FALLBACK_URL" -O dotfiles.zip
+        sh "$DOTFILES_DIR/apt/apt.sh"
     fi
 
-    unzip -q dotfiles.zip
-    sh dotfiles-*/bootstrap.sh
+    sh "$DOTFILES_DIR/file-associations/file-associations.sh"
+    sh "$DOTFILES_DIR/bash/bash.sh"
+    sh "$DOTFILES_DIR/git/git.sh"
+    sh "$DOTFILES_DIR/vim/vim.sh"
+
+    sh "$DOTFILES_DIR/sublime/sublime.sh"
+
+    if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then
+        echo "/usr/local/bin not writeable, please provide permissions:"
+        sudo chown $(whoami) /usr/local/bin
+    fi
+
+    sh "$DOTFILES_DIR/bin/bin.sh"
+}
+
+echo >&2 "This script symlinks dotfiles to the location its git repository."
+
+if [ $(id -u) -eq 0 ]; then
+    echo >&2 "Cannot bootstrap as root."
+    echo >&2 "Run base script as unelevated user, and elevation will be requested as needed."
+    exit $EXIT_CODE_INCORRECT_PERMISSIONS
+fi
+
+if [ ! -d "$PROJECTS_DIR" ]; then
+    echo >&2 "Projects directory doesn't exist."
+    echo >&2 "Creating projects directory..."
+    mkdir -p "$PROJECTS_DIR"
+fi
+
+if [ ! -d "$DOTFILES_DIR/.git" ]; then
+    temp_dir=$(mktemp -d)
+
+    if [ ! -d "$DOTFILES_DIR" ]; then
+        echo >&2 "No dotfiles directory contents found."
+        echo >&2 "Downloading GitHub archive to the correct directory..."
+
+        if type curl > /dev/null; then
+            curl -fsSL "$FALLBACK_URL" -o "$temp_dir/dotfiles.zip"
+        elif type wget > /dev/null; then
+            wget "$FALLBACK_URL" -O "$temp_dir/dotfiles.zip"
+        fi
+
+        cd "$temp_dir"
+        unzip -q dotfiles.zip
+        rm -rf dotfiles.zip
+        mv dotfiles-* "$DOTFILES_DIR"
+    else
+        echo >&2 "Dotfiles directory has contents, but is not a Git repository; running with the existing contents."
+    fi
+
+    do_dotfiles_install
+
+    echo >&2 "Dotfiles installation complete."
+    echo >&2 "Upgrading existing directory to git repo."
+
+    git clone "$HTTPS_GIT_REMOTE" "$temp_dir/dotfiles"
+    mv "$temp_dir/dotfiles/.git" "$DOTFILES_DIR/.git"
+
     rm -rf "$temp_dir"
-
-    exit
-fi
-
-echo >&2 "Setting up a $UNAME machine..."
-
-if [ "$UNAME" = "Darwin" ]; then
-    sh "$SCRIPT_DIR/brew/brew.sh"
-
-    sh "$SCRIPT_DIR/defaults/dock.sh"
-    sh "$SCRIPT_DIR/defaults/defaults.sh"
-
-    duti "$SCRIPT_DIR/file-associations/duti"
 else
-    sh "$SCRIPT_DIR/apt/apt.sh"
-    sh "$SCRIPT_DIR/file-associations/gnome.sh"
+    do_dotfiles_install
 fi
-
-bash "$SCRIPT_DIR/bash/bash.sh"
-bash "$SCRIPT_DIR/git/git.sh"
-bash "$SCRIPT_DIR/vim/vim.sh"
-
-bash "$SCRIPT_DIR/sublime/sublime.sh"
-
-if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then
-    echo "/usr/local/bin not writeable, please provide permissions:"
-    sudo chown $(whoami) /usr/local/bin
-fi
-
-bash "$SCRIPT_DIR/bin/bin.sh"

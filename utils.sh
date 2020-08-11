@@ -18,7 +18,7 @@ create_symlink_and_backup()
 	dest="$(cd $(dirname "$2") && pwd)/$(basename "$2")"
 
     if [ -f "$dest" ] || [ -L "$dest" ]; then
-        if [ "$(readlink -- "$dest")" == "$source" ]; then
+        if [ "$(readlink -- "$dest")" = "$source" ]; then
         	exit
         fi
 

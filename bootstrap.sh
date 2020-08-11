@@ -35,8 +35,6 @@ do_dotfiles_install()
     sh "$DOTFILES_DIR/git/git.sh"
     sh "$DOTFILES_DIR/vim/vim.sh"
 
-    sh "$DOTFILES_DIR/sublime/sublime.sh"
-
     if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then
         echo "/usr/local/bin not writeable, please provide permissions:"
         sudo chown $(whoami) /usr/local/bin

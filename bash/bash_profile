@@ -24,6 +24,10 @@ elif [[ "$0" = "*bash*" ]]; then
         curl -sSL "https://raw.githubusercontent.com/git/git/$git_version/contrib/completion/git-completion.bash" > "$completion_file"
     fi
 
+    # May have to look into restoring some functionality from:
+    #  https://github.com/Eagerod/dotfiles/blob/ce33011/git/git.sh#L16-L23
+    # If using Cygwin anytime soon.
+
     source "$completion_file"
 else
    echo >&2 "Shell not configured for git completion."

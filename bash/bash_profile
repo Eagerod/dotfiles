@@ -4,14 +4,44 @@ alias isodate='date -u +%Y-%m-%dT%H:%M:%SZ'
 alias me='cd "$MY_PROJECTS_DIR"'
 alias wipe='clear && printf "\e[3J"'
 
-source ~/.git-completion.bash
-source ~/.git-prompt.sh
+# Will only have to download things once.
+git_version="v$(git version | awk '{print $NF}')"
+if [[ "$0" == *zsh* ]]; then
+    completion_file="$HOME/.git-$git_version-completion.zsh"
+    function_file="$HOME/.zsh/functions/_git"
+    if [ ! -f "$completion_file" ]; then
+        curl -sSL "https://raw.githubusercontent.com/git/git/$git_version/contrib/completion/git-completion.zsh" > "$completion_file"
+        mkdir -p "$(dirname $function_file)"
+        cp "$completion_file" "$function_file"
+    fi
 
-if [ "$(uname)" == "Linux" ]; then
+    # Older/newer versions of zsh may need "~/.zsh/functions"?
+    fpath=(~/.zsh $fpath)
+    autoload -Uz compinit && compinit
+elif [[ "$0" = "*bash*" ]]; then
+    completion_file="$HOME/.git-$git_version-completion.bash"
+    if [ ! -f "$completion_file" ]; then
+        curl -sSL "https://raw.githubusercontent.com/git/git/$git_version/contrib/completion/git-completion.bash" > "$completion_file"
+    fi
+
+    source "$completion_file"
+else
+   echo >&2 "Shell not configured for git completion."
+fi
+
+prompt_file="$HOME/.git-$git_version-prompt.sh"
+if [ ! -f "$prompt_file" ]; then
+    curl -fsSL "https://raw.githubusercontent.com/git/git/$git_version/contrib/completion/git-prompt.sh" > "$prompt_file"
+fi
+source "$prompt_file"
+
+unset git_version prompt_file completion_file function_file
+
+if [ "$(uname)" = "Linux" ]; then
     alias pbcopy='xclip -selection clipboard'
     alias pbpaste='xclip -selection clipboard -o'
     alias open='xdg-open'
-elif [ "$(uname)" == "Darwin" ]; then
+elif [ "$(uname)" = "Darwin" ]; then
     alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder'
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
 fi

@@ -1,3 +1,5 @@
+# This file is maintained at:
+#   https://github.com/Eagerod/dotfiles/blob/master/docker/.dockerignore
 # Generic, and hopefully extremely reusable .dockerignore file.
 # Each section outlines a collection of somewhat related files that should be
 #   excluded from nearly every Docker image that ends up being built.
@@ -19,9 +21,11 @@ docker-compose.yaml
 **/*.orig
 **/.gitignore
 
-# Sublime Text files
+# Workspace/Editor files
 *.sublime-project
 *.sublime-workspace
+**/.idea
+**/.vscode
 
 # CI-runner files
 .gitlab-ci.yml

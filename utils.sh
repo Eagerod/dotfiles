@@ -19,7 +19,7 @@ create_symlink_and_backup()
 
     if [ -f "$dest" ] || [ -L "$dest" ]; then
         if [ "$(readlink -- "$dest")" = "$source" ]; then
-        	exit
+            return 0
         fi
 
         n_baks=$(find $(dirname "$dest") -iname "$(basename "$dest").bak.*" | wc -l)

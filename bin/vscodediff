@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [[ -p /dev/stdin ]] ; then
+    tmpFile=$(mktemp -t stdin).diff
+    tee "$tmpFile" > /dev/null
+    code --wait "$tmpFile" > /dev/null 2> /dev/null &
+else
+    # otherwise, pass along any arguments to the original `code`
+    code "$@"
+fi

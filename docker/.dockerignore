@@ -28,12 +28,13 @@ docker-compose.yaml
 **/.vscode
 
 # CI-runner files
+.drone.yml
+.drone.yaml
+.github
 .gitlab-ci.yml
 .gitlab-ci.yaml
 .travis.yml
 .travis.yaml
-.drone.yml
-.drone.yaml
 
 # General project files
 README.md

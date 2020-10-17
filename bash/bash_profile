@@ -18,7 +18,7 @@ if [[ "$0" == *zsh* ]]; then
     # Older/newer versions of zsh may need "~/.zsh/functions"?
     fpath=(~/.zsh $fpath)
     autoload -Uz compinit && compinit
-elif [[ "$0" = "*bash*" ]]; then
+elif [[ "$0" == *bash* ]]; then
     completion_file="$HOME/.git-$git_version-completion.bash"
     if [ ! -f "$completion_file" ]; then
         curl -sSL "https://raw.githubusercontent.com/git/git/$git_version/contrib/completion/git-completion.bash" > "$completion_file"
@@ -30,7 +30,7 @@ elif [[ "$0" = "*bash*" ]]; then
 
     source "$completion_file"
 else
-   echo >&2 "Shell not configured for git completion."
+   echo >&2 "Shell ($0) not configured for git completion."
 fi
 
 prompt_file="$HOME/.git-$git_version-prompt.sh"

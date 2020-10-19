@@ -51,7 +51,7 @@ elif [ "$(uname)" = "Darwin" ]; then
 fi
 
 if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" status --porcelain)" ]; then
-    echo "Dotfiles have changed..."
+    echo >&2 "Dotfiles have changed..."
 fi
 
 # Provided to explicitly have custom behaviour on machines used for different

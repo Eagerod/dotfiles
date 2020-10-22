@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+#
+# Command to set the resolution of the VNC session.
+#
+# Elects to use a low refresh rate, because who needs 60 FPS VNC anyways.
+if [ "$(uname)" != "Linux" ]; then
+    echo >&2 "Can't set resolution on this device yet."
+    exit 1
+fi
+
+# TODO: Let me optionally set a refresh rate.
+#       15 Hz may even be good enough.
+#       Save that network time (I'm assuming lowed refresh would do that)
+# TODO: Let me specify the output?
+if [ $# -ne 1 ]; then
+    echo >&2 "Usage:"
+    echo >&2 "  $0 <resolution>"
+    exit 2
+fi
+
+resolution=$1
+
+cvt_out="$(cvt $(echo $resolution | sed 's/x/ /') 30)"
+
+mode_name=$(echo "$cvt_out" | tail -1 | awk '{print $2}' | tr -d '"')
+
+if xrandr --output VNC-0 --mode $mode_name 2> /dev/null; then
+   # Successfully set resolution
+   exit
+fi
+
+modeline="$(echo "$cvt_out" | tail -1 | awk '{for (i=2; i < NF; i++) printf $i " "; print $NF}' | tr -d '"')"
+
+if ! xrandr --newmode $modeline 2> /dev/null; then
+    echo >&2 "Mode may already have been created, but not added to VNC-0"
+fi
+
+sleep 1
+
+xrandr --addmode VNC-0 $mode_name
+xrandr --output VNC-0 --mode $mode_name

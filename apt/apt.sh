@@ -88,7 +88,11 @@ sudo apt-get install -f
 
 rm -rf "$temp_dir"
 
-sudo apt-get purge xfce4
+sudo apt-get purge \
+    xfce4 \
+    xfce4-notifyd \
+    xfce4-session \
+    xfce4-terminal
 
 kde_wm_n=$(echo | update-alternatives --config x-session-manager | grep startkde | awk '{print $1}')
 if [ "$kde_wm_n" != "*" ]; then

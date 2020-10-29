@@ -94,6 +94,8 @@ sudo apt-get purge \
     xfce4-session \
     xfce4-terminal
 
+sudo apt autoremove
+
 kde_wm_n=$(echo | update-alternatives --config x-session-manager | grep startkde | awk '{print $1}')
 if [ "$kde_wm_n" != "*" ]; then
 	echo $kde_wm_n | sudo update-alternatives --config x-session-manager

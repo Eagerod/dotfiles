@@ -5,6 +5,11 @@
 # 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
+
+. "$DOTFILES_DIR/utils.sh"
+
 echo "Installing a bunch of packages, will likely require permissions escalation"
 
 NEOFETCH_VERSION=7.1.0
@@ -95,6 +100,8 @@ sudo apt-get purge \
     xfce4-terminal
 
 sudo apt autoremove
+
+create_symlink_and_backup /etc/X11/xinit/xinitrc ~/.xinitrc
 
 kde_wm_n=$(echo | update-alternatives --config x-session-manager | grep startkde | awk '{print $1}')
 if [ "$kde_wm_n" != "*" ]; then

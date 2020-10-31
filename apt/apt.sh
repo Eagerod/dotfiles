@@ -35,6 +35,7 @@ sudo apt-get install -y \
     terminator \
     traceroute \
     vim \
+    vnc4server \
     xclip \
     xz-utils
 

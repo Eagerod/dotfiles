@@ -120,6 +120,24 @@ if [ "$kde_wm_n" != "*" ]; then
 	echo $kde_wm_n | sudo update-alternatives --config x-session-manager
 fi
 
+sudo sh -c "sudo cat > /etc/systemd/system/vncserver.service" <<'EOF'
+[Unit]
+Description=VNC Server Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill :0 || :'
+ExecStart=/sbin/runuser -l aleem -c '/usr/bin/vncserver :0 -localhost no -fg'
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable vncserver
+sudo systemctl start vncserver
+
 echo >&2 "If this is the first time running, the window manager has been reintalled."
 echo >&2 "You will have to log out and log back in to use KDE."
 

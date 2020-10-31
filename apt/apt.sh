@@ -32,6 +32,7 @@ sudo apt-get install -y \
     make \
     net-tools \
     openssh-server \
+    terminator \
     traceroute \
     vim \
     xclip \
@@ -82,7 +83,8 @@ sudo apt-get install -y \
 sudo apt-get install -y \
     arc-theme \
     gtk3.0 \
-    kde-full \
+    plasma-desktop \
+    dolphin \
     latte-dock \
     tasksel \
     qt5-style-kvantum \
@@ -102,13 +104,14 @@ sudo apt-get install -f
 
 rm -rf "$temp_dir"
 
-sudo apt-get purge \
+sudo apt-get purge -y \
     xfce4 \
     xfce4-notifyd \
     xfce4-session \
-    xfce4-terminal
+    xfce4-terminal \
+    xterm
 
-sudo apt autoremove
+sudo apt autoremove -y
 
 create_symlink_and_backup /etc/X11/xinit/xinitrc ~/.xinitrc
 

@@ -43,6 +43,8 @@ if ! type code; then
     sudo dpkg -i code.deb
     sudo apt-get install -f
     rm code.deb
+else
+    echo >&2 "VS Code already installed."
 fi
 
 # Chrome
@@ -51,6 +53,16 @@ if ! type google-chrome; then
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     sudo apt-get install -f
     rm google-chrome-stable_current_amd64.deb
+else
+    echo >&2 "Chrome already installed."
+fi
+
+if ! type neofetch; then
+    curl -fsSL "https://github.com/dylanaraps/neofetch/archive/$NEOFETCH_VERSION.zip" -o neofetch.zip
+    unzip -q neofetch.zip
+    sudo PREFIX=/usr/local make -C neofetch-* install
+else
+    echo >&2 "Neofetch already installed."
 fi
 
 # Docker
@@ -80,9 +92,6 @@ temp_dir="$(mktemp -d)"
 cd "$temp_dir"
 echo "Running in $temp_dir"
 
-curl -fsSL "https://github.com/dylanaraps/neofetch/archive/$NEOFETCH_VERSION.zip" -o neofetch.zip
-unzip -q neofetch.zip
-sudo PREFIX=/usr/local make -C neofetch-* install
 
 git clone https://github.com/vinceliuice/Layan-kde
 sudo ./Layan-kde/install.sh

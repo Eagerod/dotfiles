@@ -50,6 +50,8 @@ elif [ "$(uname)" = "Darwin" ]; then
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
 fi
 
+neofetch
+
 if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" status --porcelain)" ]; then
     echo >&2 "Dotfiles have changed..."
 fi

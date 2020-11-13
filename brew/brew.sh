@@ -6,10 +6,13 @@ fi
 
 brew update
 
-brew install git
-brew install nodejs
-brew install duti
-brew install docker-machine docker docker-compose
+brew install \
+    docker \
+    docker-compose \
+    docker-machine \
+    duti \
+    git \
+    neofetch
 
 brew cask install sublime-text
 brew cask install google-chrome

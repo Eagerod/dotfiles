@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-if [[ -p /dev/stdin ]] ; then
+if [[ -p /dev/stdin ]]; then
     tmpFile=$(mktemp -t stdin).diff
     tee "$tmpFile" > /dev/null
     code --wait "$tmpFile" > /dev/null 2> /dev/null &

@@ -52,7 +52,10 @@ fi
 
 neofetch
 
-if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" status --porcelain)" ]; then
+# Let me know if any files in my dotfiles have changed.
+# Skip files that aren't tracked, to keep it from being super noisy.
+git -C "$MY_PROJECTS_DIR/dotfiles" remote update > /dev/null
+if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" diff origin/master --name-status --diff-filter=MRT)" ]; then
     echo >&2 "Dotfiles have changed..."
 fi
 

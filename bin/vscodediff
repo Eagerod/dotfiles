@@ -1,10 +1,27 @@
 #!/usr/bin/env bash
-
+#
+# Sends stdin to a file and uses a .diff file extension, so vs code can choose
+#   the right formatter.
+#
 if [[ -p /dev/stdin ]]; then
-    tmpFile=$(mktemp -t stdin).diff
-    tee "$tmpFile" > /dev/null
-    code --wait "$tmpFile" > /dev/null 2> /dev/null &
+    uname_="$(uname)"
+
+    # Have to do custom stuff so that this works for both macOS' version of
+    #   mktemp, and GNU mktemp.
+    if [ "$uname_" = "Linux" ]; then
+        tmp_file="$(mktemp -t stdin-XXXX.diff)"
+    elif [ "$uname_" = "Darwin" ]; then
+        tmp_file="$(mktemp -t stdin)"
+        rm "$tmp_file"
+        tmp_file="$tmp_file.diff"
+    else
+        echo >&2 "Don't know how to correctly create a temp file on this platform."
+        exit 1
+    fi
+
+    tee "$tmp_file" > /dev/null
+    sh -c "code --wait \"$tmp_file\" > /dev/null 2> /dev/null; rm \"$tmp_file\"" &
 else
     # otherwise, pass along any arguments to the original `code`
-    code "$@"
+    code $@
 fi

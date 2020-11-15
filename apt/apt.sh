@@ -59,6 +59,7 @@ else
     echo >&2 "Chrome already installed."
 fi
 
+# neofetch
 if ! type neofetch; then
     curl -fsSL "https://github.com/dylanaraps/neofetch/archive/$NEOFETCH_VERSION.zip" -o neofetch.zip
     unzip -q neofetch.zip

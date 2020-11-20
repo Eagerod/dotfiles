@@ -41,10 +41,7 @@ clear_dock
 # Always on apps.
 add_app_to_dock "Spotify.app"
 add_app_to_dock "Terminal.app"
-add_app_to_dock "Sublime Text*.app"
-if type charm > /dev/null 2> /dev/null; then
-    add_app_to_dock "PyCharm.app"
-fi
+add_app_to_dock "Visual Studio Code*.app"
 
 add_app_spacer_to_dock
 

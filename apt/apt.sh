@@ -142,6 +142,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable vncserver
 sudo systemctl start vncserver
 
+sudo dpkg-reconfigure sddm
+
 echo >&2 "If this is the first time running, the window manager has been reintalled."
 echo >&2 "You will have to log out and log back in to use KDE."
 

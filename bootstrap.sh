@@ -32,7 +32,7 @@ do_dotfiles_install()
 
     sh "$DOTFILES_DIR/file-associations/file-associations.sh"
     sh "$DOTFILES_DIR/bash/bash.sh"
-    sh "$DOTFILES_DIR/git/git.sh"
+    bash "$DOTFILES_DIR/git/git.sh"
     sh "$DOTFILES_DIR/vim/vim.sh"
 
     if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then

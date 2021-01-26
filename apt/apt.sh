@@ -100,7 +100,9 @@ echo "Running in $temp_dir"
 
 
 git clone https://github.com/vinceliuice/Layan-kde
+git -C ./Layan-kde checkout 45e7a18529166369553f75a1fd7690163c8da872
 sudo ./Layan-kde/install.sh
+sudo ./Layan-kde/sddm/install.sh
 
 curl -fsSL "https://github.com/vinceliuice/Tela-icon-theme/releases/download/$TELA_VERSION/Tela-icon-theme-$TELA_VERSION.deb" -o tela.deb
 sudo dpkg -i tela.deb

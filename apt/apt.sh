@@ -83,6 +83,8 @@ sudo apt-get install -y \
 
 # Themeing
 sudo apt-get install -y \
+    sddm \
+    xorg \
     arc-theme \
     gtk3.0 \
     plasma-desktop \

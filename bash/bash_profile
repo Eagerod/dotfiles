@@ -50,14 +50,7 @@ elif [ "$(uname)" = "Darwin" ]; then
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
 fi
 
-neofetch
-
-# Let me know if any files in my dotfiles have changed.
-# Skip files that aren't tracked, to keep it from being super noisy.
-git -C "$MY_PROJECTS_DIR/dotfiles" remote update > /dev/null
-if [ ! -z "$(git -C "$MY_PROJECTS_DIR/dotfiles" diff origin/master --name-status --diff-filter=MRT)" ]; then
-    echo >&2 "Dotfiles have changed..."
-fi
+neofetch --config "$MY_PROJECTS_DIR/dotfiles/neofetch/config.conf"
 
 # Provided to explicitly have custom behaviour on machines used for different
 #   purposes.

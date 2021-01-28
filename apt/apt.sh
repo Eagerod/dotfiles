@@ -14,6 +14,7 @@ echo "Installing a bunch of packages, will likely require permissions escalation
 
 NEOFETCH_VERSION=7.1.0
 TELA_VERSION=2020-06-25
+GOLANG_VERSION=1.15.6
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -66,6 +67,21 @@ if ! type neofetch; then
     sudo PREFIX=/usr/local make -C neofetch-* install
 else
     echo >&2 "Neofetch already installed."
+fi
+
+# Golang
+# Maybe make the /usr/local/go dir beforehand and chown it?
+# Seems like it's fine that root owns the directory so far.
+if [ "$(uname)" = "Linux" ]; then
+    if ! type go || [[ "$(go version)" != *"${GOLANG_VERSION}"* ]]; then
+        curl -fsSL "https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz" -o golang.tar.gz
+        sudo tar -C /usr/local -xzf golang.tar.gz
+        rm -f golang.tar.gz
+    else
+        echo >&2 "Golang ${GOLANG_VERSION} already installed."
+    fi
+else
+    echo >&2 "Not installing Golang on this machine"
 fi
 
 # Docker

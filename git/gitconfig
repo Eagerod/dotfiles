@@ -25,6 +25,8 @@
 [core]
 	editor = code --wait
 	excludesfile = ~/.gitignore
+[tag]
+	sort = version:refname
 [merge]
 	tool = vscode
 [mergetool "vscode"]

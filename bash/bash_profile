@@ -57,3 +57,5 @@ neofetch --config "$MY_PROJECTS_DIR/dotfiles/neofetch/config.conf"
 if [ -f ~/.bash_profile_extra ]; then
     source ~/.bash_profile_extra
 fi
+
+export HISTTIMEFORMAT="[%FT%T] "

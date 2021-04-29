@@ -9,7 +9,7 @@ PROJECTS_DIR="$HOME/Documents/personal/projects"
 DOTFILES_DIR="$PROJECTS_DIR/dotfiles"
 
 FALLBACK_TARGET=master
-if [ ! -z $1 ]; then
+if [ $# -gt 0 ]; then
     FALLBACK_TARGET="$1"
 fi
 
@@ -35,12 +35,12 @@ do_dotfiles_install()
     bash "$DOTFILES_DIR/git/git.sh"
     sh "$DOTFILES_DIR/vim/vim.sh"
 
-    if [ "$(stat -c "%U" /usr/local/bin)" != "$(whoami)" ]; then
-        echo "/usr/local/bin not writeable, please provide permissions:"
-        sudo chown $(whoami) /usr/local/bin
+    if [ ! -d /usr/local/bin ]; then
+        sudo mkdir /usr/local/bin
     fi
 
-    sh "$DOTFILES_DIR/bin/bin.sh"
+    # Needs sudo to symlink everything under /usr/local/bin
+    sudo sh "$DOTFILES_DIR/bin/bin.sh"
 }
 
 echo >&2 "This script symlinks dotfiles to the location its git repository."

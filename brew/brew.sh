@@ -1,28 +1,32 @@
 #!/bin/sh
+set -euf
 
 if ! type brew > /dev/null 2> /dev/null; then
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    if ! bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"; then
+        echo >&2 "Homebrew requires the user session to be authenticated."
+        echo >&2 "Possibly need to run a simple sudoed command before continuing."
+        exit 1
+    fi
+
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 brew update
 
 brew install \
+    alfred \
+    bitwarden \
     docker \
     docker-compose \
     docker-machine \
     duti \
     git \
-    neofetch
-
-brew cask install \
-    alfred \
-    bitwarden \
     google-chrome \
-    istat-menus \
+    neofetch \
     slack \
     spotify \
     steam \
-    virtualbox \
     visual-studio-code \
     vlc
 

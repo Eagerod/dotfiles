@@ -4,7 +4,6 @@ set -euf
 APP_INSTALLATION_DIRECTORIES=(
     '/Applications'
     '/System/Applications'
-    '/usr/local/Caskroom'
 )
 
 clear_dock() {

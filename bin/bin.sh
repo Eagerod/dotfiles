@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 #
 # Link all files in this directory, other than this file to /usr/local/bin.
+set -euf
 
 BIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 DOTFILES_DIR="$(cd "$(dirname $BIN_DIR)" && pwd)"

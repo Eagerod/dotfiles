@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Get this machine up to snuff
-set -e
+set -eufxo pipefail
 
 EXIT_CODE_INCORRECT_PERMISSIONS=1
 

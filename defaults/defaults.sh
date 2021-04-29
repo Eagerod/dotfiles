@@ -1,3 +1,6 @@
+#!/usr/bin/env sh
+set -euf
+
 # No iCloud documents
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
@@ -86,6 +89,7 @@ sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:AC\ Power:Display\ Sleep\ T
 sudo /usr/libexec/PlistBuddy -c "set Custom\ Profile:Battery\ Power:Display\ Sleep\ Timer 1" /Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist
 sudo -k # No side effects?
 
+set +e
 killall Dock
 killall Xcode
 killall SystemUIServer

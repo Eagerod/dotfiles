@@ -1,3 +1,6 @@
+#!/usr/bin/env sh
+set -euf
+
 APP_INSTALLATION_DIRECTORIES=(
     '/Applications'
     '/System/Applications'

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -euf
 
 SCRIPT_DIR="$(cd "$(dirname $0)" && pwd)"
 DOTFILES_DIR="$(cd "$(dirname $SCRIPT_DIR)" && pwd)"

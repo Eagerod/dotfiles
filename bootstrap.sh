@@ -31,7 +31,7 @@ do_dotfiles_install()
     fi
 
     sh "$DOTFILES_DIR/file-associations/file-associations.sh"
-    sh "$DOTFILES_DIR/bash/bash.sh"
+    bash "$DOTFILES_DIR/bash/bash.sh"
     bash "$DOTFILES_DIR/git/git.sh"
     sh "$DOTFILES_DIR/vim/vim.sh"
 

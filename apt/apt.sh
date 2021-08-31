@@ -69,6 +69,13 @@ else
     echo >&2 "Neofetch already installed."
 fi
 
+if ! type bitwarden; then
+    curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb" -o bitwarden.deb
+    sudo dpkg -i bitwarden.deb
+    sudo apt-get install -f
+    rm bitwarden.deb
+fi
+
 # Golang
 # Maybe make the /usr/local/go dir beforehand and chown it?
 # Seems like it's fine that root owns the directory so far.

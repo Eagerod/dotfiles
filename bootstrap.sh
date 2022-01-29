@@ -73,7 +73,7 @@ if [ ! -d "$DOTFILES_DIR/.git" ]; then
         cd "$temp_dir"
         unzip -q dotfiles.zip
         rm -rf dotfiles.zip
-        mv dotfiles-* "$DOTFILES_DIR"
+        mv "dotfiles-$FALLBACK_TARGET" "$DOTFILES_DIR"
     else
         echo >&2 "Dotfiles directory has contents, but is not a Git repository; running with the existing contents."
     fi

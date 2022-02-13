@@ -22,25 +22,25 @@ do_dotfiles_install()
     echo >&2 "Setting up a $UNAME machine..."
 
     if [ "$UNAME" = "Darwin" ]; then
-        sh "$DOTFILES_DIR/brew/brew.sh"
+        "$DOTFILES_DIR/brew/brew.sh"
 
-        sh "$DOTFILES_DIR/defaults/dock.sh"
-        sh "$DOTFILES_DIR/defaults/defaults.sh"
+        "$DOTFILES_DIR/defaults/dock.sh"
+        "$DOTFILES_DIR/defaults/defaults.sh"
     else
-        sh "$DOTFILES_DIR/apt/apt.sh"
+        "$DOTFILES_DIR/apt/apt.sh"
     fi
 
-    sh "$DOTFILES_DIR/file-associations/file-associations.sh"
-    bash "$DOTFILES_DIR/bash/bash.sh"
-    bash "$DOTFILES_DIR/git/git.sh"
-    sh "$DOTFILES_DIR/vim/vim.sh"
+    "$DOTFILES_DIR/file-associations/file-associations.sh"
+    "$DOTFILES_DIR/bash/bash.sh"
+    "$DOTFILES_DIR/git/git.sh"
+    "$DOTFILES_DIR/vim/vim.sh"
 
     if [ ! -d /usr/local/bin ]; then
         sudo mkdir /usr/local/bin
     fi
 
     # Needs sudo to symlink everything under /usr/local/bin
-    sudo sh "$DOTFILES_DIR/bin/bin.sh"
+    sudo "$DOTFILES_DIR/bin/bin.sh"
 }
 
 echo >&2 "This script symlinks dotfiles to the location its git repository."

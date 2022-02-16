@@ -56,6 +56,44 @@ fi
 
 neofetch --config "$MY_PROJECTS_DIR/dotfiles/neofetch/config.conf"
 
+__get_git_remote_urls() {
+    git remote -v | awk '{print $2}' | sed 's_git@_https://_; s_.com:_.com/_' | sort | uniq
+}
+
+__get_named_git_remote_urls() {
+    if [ $# -ne 1 ]; then
+        echo >&2 "Usage: $0 <remote pattern>"
+        return 1
+    fi
+    remotes=($(__get_git_remote_urls | grep "$1"))
+    if [ ${#remotes} -eq 0 ]; then
+        echo >&2 "No $1 remotes found for this repository."
+        return 1
+    fi
+    if [ ${#remotes} -ne 1 ]; then
+        echo >&2 "Multiple $1 remotes found; unsure how to proceed."
+        return 1
+    fi
+
+    echo "$remotes"
+}
+
+gh() {
+    if ! open_domain="$(__get_named_git_remote_urls github.com)"; then
+        return $?
+    fi
+
+    open "$open_domain"
+}
+
+gt() {
+    if ! open_domain="$(__get_named_git_remote_urls gitea.internal.aleemhaji.com)"; then
+        return $?
+    fi
+
+    open "$open_domain"
+}
+
 # Provided to explicitly have custom behaviour on machines used for different
 #   purposes.
 if [ -f ~/.bash_profile_extra ]; then

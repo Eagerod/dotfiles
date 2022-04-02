@@ -40,9 +40,15 @@ sudo apt-get install -y \
     xclip \
     xz-utils
 
+# Hop into a temp dir before trying to download installer packages; the user
+#   may not be allowed to write to the current directory.
+temp_dir="$(mktemp -d)"
+cd "$temp_dir"
+echo "Running in $temp_dir"
+
 # VS Code
-if ! type code; then 
-    wget https://go.microsoft.com/fwlink/?LinkID=760868 -O code.deb
+if ! type code > /dev/null; then
+    curl -fsSL "https://go.microsoft.com/fwlink/?LinkID=760868" -o code.deb
     sudo dpkg -i code.deb
     sudo apt-get install -f
     rm code.deb
@@ -51,8 +57,8 @@ else
 fi
 
 # Chrome
-if ! type google-chrome; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+if ! type google-chrome > /dev/null; then
+    curl -fsSL "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     sudo apt-get install -f
     rm google-chrome-stable_current_amd64.deb
@@ -61,7 +67,7 @@ else
 fi
 
 # neofetch
-if ! type neofetch; then
+if ! type neofetch > /dev/null; then
     curl -fsSL "https://github.com/dylanaraps/neofetch/archive/$NEOFETCH_VERSION.zip" -o neofetch.zip
     unzip -q neofetch.zip
     sudo PREFIX=/usr/local make -C neofetch-* install
@@ -69,11 +75,13 @@ else
     echo >&2 "Neofetch already installed."
 fi
 
-if ! type bitwarden; then
+if ! type bitwarden > /dev/null; then
     curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb" -o bitwarden.deb
     sudo dpkg -i bitwarden.deb
     sudo apt-get install -f
     rm bitwarden.deb
+else
+    echo >&2 "Bitwarden already installed."
 fi
 
 # Golang
@@ -116,11 +124,6 @@ sudo apt-get install -y \
     tasksel \
     qt5-style-kvantum \
     qt5-style-kvantum-themes
-
-temp_dir="$(mktemp -d)"
-cd "$temp_dir"
-echo "Running in $temp_dir"
-
 
 git clone https://github.com/vinceliuice/Layan-kde
 git -C ./Layan-kde checkout 45e7a18529166369553f75a1fd7690163c8da872

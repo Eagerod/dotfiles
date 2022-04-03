@@ -16,6 +16,26 @@ NEOFETCH_VERSION=7.1.0
 TELA_VERSION=2020-06-25
 GOLANG_VERSION=1.15.6
 
+
+# Check to see the sudo situation.
+# - Make sure I'm not root.
+# - Is sudo installed?
+# - Am I even a sudoer?
+# - Is this an interactive session, and can I even ask for sudo?
+if [ "$UID" -eq 0 ]; then
+    # But why?
+    echo >&2 "Refusing to install packages as root."
+    exit 1
+elif ! type sudo > /dev/null; then
+    echo >&2 "sudo not installed; skipping package installation."
+    exit 1
+elif [ ! -t 0 ]; then
+    if ! SUDO_ASKPASS=/bin/false sudo -A whoami; then
+        echo >&2 "The user $(whoami) is not a passwordless sudoer; cannot continue in non-interactive shell."
+        exit 1
+    fi
+fi
+
 sudo apt-get update
 sudo apt-get install -y \
     software-properties-common \

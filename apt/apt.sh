@@ -76,6 +76,7 @@ sudo apt-get install -y \
 # Hop into a temp dir before trying to download installer packages; the user
 #   may not be allowed to write to the current directory.
 temp_dir="$(mktemp -d)"
+trap 'rm -rf "$temp_dir"' EXIT
 cd "$temp_dir"
 echo "Running in $temp_dir"
 
@@ -161,8 +162,6 @@ sudo ./Layan-kde/sddm/install.sh
 curl -fsSL "https://github.com/vinceliuice/Tela-icon-theme/releases/download/$TELA_VERSION/Tela-icon-theme-$TELA_VERSION.deb" -o tela.deb
 sudo dpkg -i tela.deb
 sudo apt-get install -f
-
-rm -rf "$temp_dir"
 
 sudo apt-get purge -y \
     xfce4 \

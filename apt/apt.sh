@@ -14,7 +14,7 @@ echo "Installing a bunch of packages, will likely require permissions escalation
 
 NEOFETCH_VERSION=7.1.0
 TELA_VERSION=2020-06-25
-GOLANG_VERSION=1.15.6
+GOLANG_VERSION=1.18
 
 
 # Check to see the sudo situation.
@@ -108,7 +108,13 @@ fi
 # Maybe make the /usr/local/go dir beforehand and chown it?
 # Seems like it's fine that root owns the directory so far.
 if [ "$(uname)" = "Linux" ]; then
-    if ! type go || [[ "$(go version)" != *"${GOLANG_VERSION}"* ]]; then
+    # Extra files in an old installation can clash in interesting ways.
+    if type go > /dev/null 2> /dev/null && [[ "$(go version)" != *"${GOLANG_VERSION}"* ]]; then
+        echo >&2 "Removing existing Go installation, as it's the wrong version."
+        rm -rf /usr/local/go
+    fi
+
+    if ! type go > /dev/null 2> /dev/null; then
         curl -fsSL "https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz" -o golang.tar.gz
         sudo tar -C /usr/local -xzf golang.tar.gz
         rm -f golang.tar.gz

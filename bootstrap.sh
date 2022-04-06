@@ -45,7 +45,7 @@ do_dotfiles_install()
 
 echo >&2 "This script symlinks dotfiles to the location its git repository."
 
-if [ $(id -u) -eq 0 ]; then
+if [ "$(id -u)" -eq 0 ]; then
     echo >&2 "Cannot bootstrap as root."
     echo >&2 "Run base script as unelevated user, and elevation will be requested as needed."
     exit $EXIT_CODE_INCORRECT_PERMISSIONS
@@ -58,7 +58,7 @@ if [ ! -d "$PROJECTS_DIR" ]; then
 fi
 
 if [ ! -d "$DOTFILES_DIR/.git" ]; then
-    temp_dir=$(mktemp -d)
+    temp_dir="$(mktemp -d)"
 
     if [ ! -d "$DOTFILES_DIR" ]; then
         echo >&2 "No dotfiles directory contents found."

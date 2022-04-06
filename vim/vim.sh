@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 set -euf
 
-SCRIPT_DIR="$(cd "$(dirname $0)" && pwd)"
-DOTFILES_DIR="$(cd "$(dirname $SCRIPT_DIR)" && pwd)"
-DEST_DIR=$HOME
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$SCRIPT_DIR")" && pwd)"
+DEST_DIR="$HOME"
 
 . "$DOTFILES_DIR/utils.sh"
 

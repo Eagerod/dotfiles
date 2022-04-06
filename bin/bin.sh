@@ -4,7 +4,7 @@
 set -euf
 
 BIN_DIR="$(cd "$(dirname "$0")" && pwd)"
-DOTFILES_DIR="$(cd "$(dirname $BIN_DIR)" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$BIN_DIR")" && pwd)"
 DEST_DIR=/usr/local/bin
 
 . "$DOTFILES_DIR/utils.sh"

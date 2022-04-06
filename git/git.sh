@@ -21,7 +21,7 @@ GITIGNORE_SOURCES=(
     "git"
     "sublimetext"
     "vim"
-    "vscode"
+    "visualstudiocode"
     "zsh"
 )
 

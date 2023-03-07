@@ -15,7 +15,6 @@ fi
 brew update
 
 brew install \
-    alfred \
     bitwarden \
     docker \
     docker-compose \
@@ -24,6 +23,7 @@ brew install \
     git \
     google-chrome \
     neofetch \
+    raycast \
     slack \
     spotify \
     steam \

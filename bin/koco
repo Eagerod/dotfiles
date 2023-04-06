@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 #
 # A little script to manage Sideloadmode Kobo Collections.
+set -euf
 
 # cat ~/Desktop/collections.json | ~/Desktop/script.sh ~/Desktop/KoboReader.sqlite
 

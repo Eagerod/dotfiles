@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+#
+# A little script to manage Sideloadmode Kobo Collections.
+
+# cat ~/Desktop/collections.json | ~/Desktop/script.sh ~/Desktop/KoboReader.sqlite
+
+# Update to accept `-` or file from command line.
+# Probably also add an example file output or something.
+if [ "$#" -ne 1 ]; then
+	echo >&2 "Usage:"
+	echo >&2 "  $0 <db file>"
+	exit 1
+fi
+
+RUN_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+CHECK_QUERY='"SELECT 1 FROM ShelfContent WHERE ShelfName = \"\(.key)\" AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
+CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, DateModified, _IsDeleted, _IsSynced) VALUES (\"\(.key)\", \"file:///mnt/onboard/\(.value)\", \"\(.date)\", \"false\", \"false\");"'
+
+cat - | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
+	query="$(jq -r "$CHECK_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$1" "$query")" ]; then
+		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"
+		sqlite3 "$1" "$command"
+		# Update to show collection + book path.
+		echo "Inserted $line"
+	fi
+done

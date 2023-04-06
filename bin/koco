@@ -12,8 +12,6 @@ help() {
 	jq -n '{"collections": {"Some Collection Name": ["some/book/path.epub"]}}'
 }
 
-# TODO: Create a clean up trap to delete temp files.
-
 if [ "$#" -ne 2 ]; then
 	if [ "$1" = "-h" ]; then
 		help
@@ -39,14 +37,17 @@ EXISTS_QUERY='"SELECT 1 FROM content WHERE ContentType = 6 AND ContentId = \"fil
 CHECK_QUERY='"SELECT 1 FROM ShelfContent WHERE ShelfName = \"\(.key)\" AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
 CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, DateModified, _IsDeleted, _IsSynced) VALUES (\"\(.key)\", \"file:///mnt/onboard/\(.value)\", \"\(.date)\", \"false\", \"false\");"'
 
-temp_db="$(mktemp)"
+temp_dir="$(mktemp -d)"
+trap 'rm -rf -- "$temp_dir"' EXIT
+
+temp_db="$temp_dir/db.sqlite"
 cp "$1" "$temp_db"
 
 # Can't read stdin multiple times, so if this is reading from stdin, dump to
 #   temp file.
 source_file="$2"
 if [ "$source_file" = "-" ]; then
-	source_file="$(mktemp)"
+	source_file="$temp_dir/collections.json"
 	cat - > "$source_file"
 fi
 

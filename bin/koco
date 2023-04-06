@@ -24,6 +24,7 @@ fi
 
 RUN_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 CHECK_COLLECTION_QUERY='"SELECT 1 FROM Shelf WHERE Id = \"\(.value)\";"'
+EXISTS_QUERY='"SELECT 1 FROM content WHERE ContentType = 6 AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
 CHECK_QUERY='"SELECT 1 FROM ShelfContent WHERE ShelfName = \"\(.key)\" AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
 CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, DateModified, _IsDeleted, _IsSynced) VALUES (\"\(.key)\", \"file:///mnt/onboard/\(.value)\", \"\(.date)\", \"false\", \"false\");"'
 
@@ -49,6 +50,13 @@ cat "$source_file" | jq -c '.collections | keys | to_entries[]' | while read -r 
 done
 
 cat "$source_file" | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
+	query="$(jq -r "$EXISTS_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
+		echo >&2 "Failed to find content: $(jq -r ".value" <<< "$line")"
+		echo >&2 "Does it exist on the device + is it spelled correctly?"
+		exit 4
+	fi
+
 	query="$(jq -r "$CHECK_QUERY" <<< "$line")"
 	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
 		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"

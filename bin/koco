@@ -5,6 +5,8 @@ set -euf
 
 # cat ~/Desktop/collections.json | ~/Desktop/script.sh ~/Desktop/KoboReader.sqlite
 
+# Create a clean up trap to delete temp files.
+
 # Update to accept `-` or file from command line.
 # Probably also add an example file output or something.
 if [ "$#" -ne 2 ]; then
@@ -21,13 +23,32 @@ if [ ! -f "$1" ]; then
 fi
 
 RUN_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+CHECK_COLLECTION_QUERY='"SELECT 1 FROM Shelf WHERE Id = \"\(.value)\";"'
 CHECK_QUERY='"SELECT 1 FROM ShelfContent WHERE ShelfName = \"\(.key)\" AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
 CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, DateModified, _IsDeleted, _IsSynced) VALUES (\"\(.key)\", \"file:///mnt/onboard/\(.value)\", \"\(.date)\", \"false\", \"false\");"'
 
 temp_db="$(mktemp)"
 cp "$1" "$temp_db"
 
-cat "$2" | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
+# Can't read stdin multiple times, so if this is reading from stdin, dump to
+#   temp file.
+source_file="$2"
+if [ "$source_file" = "-" ]; then
+	source_file="$(mktemp)"
+	cat - > "$source_file"
+fi
+
+# Validate that collections exist.
+cat "$source_file" | jq -c '.collections | keys | to_entries[]' | while read -r line; do
+	query="$(jq -r "$CHECK_COLLECTION_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
+		echo >&2 "Failed to find collection: $(jq -r ".value" <<< "$line")"
+		echo >&2 "Does it exist on the device + is it spelled correctly?"
+		exit 3
+	fi
+done
+
+cat "$source_file" | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
 	query="$(jq -r "$CHECK_QUERY" <<< "$line")"
 	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
 		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"

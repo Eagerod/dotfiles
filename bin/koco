@@ -25,7 +25,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 # Copy the SQLite file out to a temporary dir as to not write a bunch on the
-#   SD card.
+#   device's internal storage.
 if [ ! -f "$1" ]; then
 	echo >&2 "Database file not found"
 	exit 2
@@ -77,5 +77,5 @@ cat "$source_file" | jq -c '.collections | to_entries[] | {key, value: .value[]}
 	fi
 done
 
-# Copy completed DB back to the SD card.
+# Copy completed DB back to internal storage.
 cp "$temp_db" "$1"

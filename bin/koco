@@ -6,9 +6,9 @@
 
 # Update to accept `-` or file from command line.
 # Probably also add an example file output or something.
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
 	echo >&2 "Usage:"
-	echo >&2 "  $0 <db file>"
+	echo >&2 "  $0 <db file> <collections-json|->"
 	exit 1
 fi
 
@@ -26,7 +26,7 @@ CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, 
 temp_db="$(mktemp)"
 cp "$1" "$temp_db"
 
-cat - | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
+cat "$2" | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
 	query="$(jq -r "$CHECK_QUERY" <<< "$line")"
 	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
 		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"

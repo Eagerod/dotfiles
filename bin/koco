@@ -3,14 +3,25 @@
 # A little script to manage Sideloadmode Kobo Collections.
 set -euf
 
-# cat ~/Desktop/collections.json | ~/Desktop/script.sh ~/Desktop/KoboReader.sqlite
+help() {
+	echo "Usage:"
+	echo "  $0 -h"
+	echo "  $0 <db file> <collections-json|->"
+	echo ""
+	echo "collections-json:"
+	jq -n '{"collections": {"Some Collection Name": ["some/book/path.epub"]}}'
+}
 
-# Create a clean up trap to delete temp files.
+# TODO: Create a clean up trap to delete temp files.
 
-# Update to accept `-` or file from command line.
-# Probably also add an example file output or something.
 if [ "$#" -ne 2 ]; then
+	if [ "$1" = "-h" ]; then
+		help
+		exit
+	fi
+
 	echo >&2 "Usage:"
+	echo >&2 "  $0 -h"
 	echo >&2 "  $0 <db file> <collections-json|->"
 	exit 1
 fi

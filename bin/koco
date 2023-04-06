@@ -61,8 +61,7 @@ cat "$source_file" | jq -c '.collections | to_entries[] | {key, value: .value[]}
 	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
 		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"
 		sqlite3 "$temp_db" "$command"
-		# Update to show collection + book path.
-		echo "Inserted $line"
+		jq -r '"Inserted \"\(.value)\" into \"\(.key)\""' <<< "$line"
 	fi
 done
 

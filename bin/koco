@@ -13,7 +13,7 @@ help() {
 }
 
 if [ "$#" -ne 2 ]; then
-	if [ "$1" = "-h" ]; then
+	if [ "$#" -eq 1 ] && [ "$1" = "-h" ]; then
 		help
 		exit
 	fi

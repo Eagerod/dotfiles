@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+#
+# Write captions to images at specified locations.
+# Pretty good at being a memegenerator.
+#
+set -eufo pipefail
+
+EXIT_CODE_INVALID_USE=1
+EXIT_CODE_BAD_ARGS=2
+
+if [ $# -lt 2 ]; then
+	echo >&2 "usage:"
+	echo >&2 "  $0 <templates-path> <template-name> [<text> ...]"
+	exit $EXIT_CODE_INVALID_USE
+fi
+
+templates_path="$1"
+template_name="$2"
+shift
+shift
+
+output_filename="$HOME/Desktop/$(uuidgen | tr '[:upper:]' '[:lower:]').png"
+
+meme_templates="$(cat "$templates_path")"
+
+this_meme_template="$(jq -r ".$template_name" <<< "$meme_templates")"
+if [ "$this_meme_template" = "null" ]; then
+	echo >&2 "Failed to find '$template_name'."
+	exit $EXIT_CODE_BAD_ARGS
+fi
+
+source_image="$(jq -r '.source_image' <<< "$this_meme_template")"
+text="$*"
+
+if [ "$(jq -r '.text' <<< "$this_meme_template")" = "upper" ]; then
+	text="$(tr '[:lower:]' '[:upper:]' <<< "$text")"
+fi
+
+caption_max_size="$(jq -r '.caption_max_size' <<< "$this_meme_template")"
+if [ "$caption_max_size" = "null" ]; then
+	echo >&2 "Need to include caption_max_size";
+	exit $EXIT_CODE_BAD_ARGS
+fi
+
+font="$(jq -r '.font' <<< "$this_meme_template")"
+text_size="$(convert \( -font "$font" -size "$caption_max_size" caption:"$text" \) -format "%[caption:pointsize]" info:)"
+
+text_max_size="$(jq -r '.text_max_size' <<< "$this_meme_template")"
+if [ ! -z "$text_max_size" ] && [ "$text_size" -gt "$text_max_size" ]; then
+	text_size="$text_max_size"
+fi
+
+style="$(jq -r '.style' <<< "$this_meme_template")"
+if [ "$style" = null ]; then
+	echo >&2 "Need to include style"
+	exit $EXIT_CODE_BAD_ARGS
+elif [ "$style" = "meme" ]; then
+	font_adders=(-fill white -stroke black -strokewidth 2)
+elif [ "$style" = "white" ]; then
+	font_adders=(-fill white)
+elif [ "$style" = "black" ]; then
+	font_adders=(-fill black)
+fi
+
+caption_position="$(jq -r '.caption_position' <<< "$this_meme_template")"
+alignment="$(jq -r '.alignment' <<< "$this_meme_template")"
+convert "$source_image" \
+	\( -font "$font" "${font_adders[@]}" -pointsize "$text_size" -size "$caption_max_size" -background none -gravity "$alignment" caption:"$text" -trim -extent "$caption_max_size" \) \
+	-gravity North -geometry "$caption_position" -composite "$output_filename"

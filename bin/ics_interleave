@@ -1,0 +1,110 @@
+#!/usr/bin/env sh
+#
+# Generate ICS file with interleaved RRULE events based on recurrence rate.
+# Creates the trivial "Every interval is its own RRULE" layout, even though
+#  it's possible for some more compressed repetitions
+#
+set -euf
+
+ICAL_HEADER="BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Custom RRULE Scheduler//EN"
+
+ICAL_FOOTER="END:VCALENDAR"
+
+EXIT_CODE_UNKNOWN_ARGUMENT=1
+EXIT_CODE_INCOMPLETE_INVOCATION=2
+EXIT_CODE_INVALID_PLATFORM=3
+EXIT_CODE_INVALID_ARGUMENT=4
+
+if [ "$(uname)" = "Linux" ]; then
+    format_date() {
+        date -u -d "$1" "+%Y%m%dT%H%M%SZ"
+    }
+
+    day_offset() {
+        date -I -d "$1 + $2"
+    }
+elif [ "$(uname)" = "Darwin" ]; then
+    format_date() {
+        date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$1" +%Y%m%dT%H%M%SZ
+    }
+
+    day_offset() {
+        date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "-v+${2}" "$1" "+%Y-%m-%dT%H:%M:%SZ"
+    }
+else
+    echo >&2 "Unknown platform $(uname)"
+    exit "$EXIT_CODE_INVALID_PLATFORM"
+fi
+
+generate_event_rrule() {
+  cat <<EOF
+BEGIN:VEVENT
+UID:$1
+SUMMARY:$2
+DTSTAMP:$(format_date "$(date -u "+%Y-%m-%dT%H:%M:%SZ")")
+DTSTART:$3
+DTEND:$4
+RRULE:$5
+END:VEVENT
+EOF
+}
+
+usage() {
+  echo "Usage: $0 START_DATE_TIME -d DURATION -i INTERVAL_DAYS -r INTERLEAVE_RATE -t TITLE_MAIN -a TITLE_ALT"
+  echo "Example: $0 2025-06-26T16:00:00Z -d 1H -i 14 -r 4 -t 'Bi-weekly Sync' -a 'Big Review'"
+}
+
+start_date="$1"
+shift
+
+while getopts "d:i:r:t:a:" opt; do
+  case $opt in
+    d) duration="$OPTARG" ;;
+    i) interval_days="$OPTARG" ;;
+    r) interleave_rate="$OPTARG" ;;
+    t) title_main="$OPTARG" ;;
+    a) title_alt="$OPTARG" ;;
+    *) usage >&2 && exit "$EXIT_CODE_UNKNOWN_ARGUMENT" ;;
+  esac
+done
+
+if [ -z "${start_date:-}" ]; then echo >&2 "Missing start date"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+if [ -z "${duration:-}" ]; then echo >&2 "Missing meeting duration"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+if [ -z "${interval_days:-}" ]; then echo >&2 "Missing interval days"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+if [ -z "${interleave_rate:-}" ]; then echo >&2 "Missing interleave rate"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+if [ -z "${title_main:-}" ]; then echo >&2 "Missing title main"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+if [ -z "${title_alt:-}" ]; then echo >&2 "Missing title alt"; usage >&2; exit "$EXIT_CODE_INCOMPLETE_INVOCATION"; fi
+
+if ! format_date "$start_date" > /dev/null; then
+    echo >&2 "Cannot parse date: $start_date"
+    exit "$EXIT_CODE_INVALID_ARGUMENT"
+elif ! day_offset "$start_date" "$duration" > /dev/null; then
+    echo >&2 "Cannot parse duration: $duration"
+    exit "$EXIT_CODE_INVALID_ARGUMENT"
+fi
+
+max_main_offset="$((interval_days * (interleave_rate - 2)))"
+alt_offset="$((interval_days * (interleave_rate - 1)))"
+unit_interval="$((interval_days * interleave_rate))"
+
+echo "$ICAL_HEADER"
+
+for offset in $(seq 0 "$interval_days" "$max_main_offset"); do
+    current_start_date="$(day_offset "$start_date" "${offset}d")"
+    dtstart_main=$(format_date "$current_start_date")
+    dtend_main=$(format_date "$(day_offset "$current_start_date" "$duration")")
+    rrule_main="FREQ=DAILY;INTERVAL=$unit_interval"
+
+    generate_event_rrule "$(uuidgen)" "$title_main" "$dtstart_main" "$dtend_main" "$rrule_main"
+done
+
+alt_start_date=$(day_offset "$start_date" "${alt_offset}d")
+dtstart_alt=$(format_date "$alt_start_date")
+dtend_alt=$(format_date "$(day_offset "$alt_start_date" "$duration")")
+rrule_alt="FREQ=DAILY;INTERVAL=$unit_interval"
+
+generate_event_rrule "$(uuidgen)" "$title_alt" "$dtstart_alt" "$dtend_alt" "$rrule_alt"
+
+echo "$ICAL_FOOTER"

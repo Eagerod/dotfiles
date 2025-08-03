@@ -54,7 +54,7 @@ elif [ "$(uname)" = "Darwin" ]; then
     alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder'
 fi
 
-neofetch --config "$MY_PROJECTS_DIR/dotfiles/neofetch/config.conf"
+export HISTTIMEFORMAT="[%FT%T] "
 
 __get_git_remote_urls() {
     git remote -v | awk '{print $2}' | sed 's_git@_https://_; s_.com:_.com/_' | sort | uniq
@@ -100,4 +100,10 @@ if [ -f ~/.bash_profile_extra ]; then
     source ~/.bash_profile_extra
 fi
 
-export HISTTIMEFORMAT="[%FT%T] "
+if git -C "${MY_PROJECTS_DIR}/dotfiles" status --porcelain | grep -q .; then
+	echo "\e[0;31mThere are uncommitted changes in dotfiles...\e[0m"
+fi
+
+if git -C "${MY_PROJECTS_DIR}/dotfiles" diff master origin/master | grep -q .; then
+	echo "\e[0;31mLocal and remote dotfiles out of sync...\e[0m"
+fi

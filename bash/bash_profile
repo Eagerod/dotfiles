@@ -103,9 +103,9 @@ if [ -f ~/.bash_profile_extra ]; then
 fi
 
 if git -C "${MY_PROJECTS_DIR}/dotfiles" status --porcelain | grep -q .; then
-	echo "\e[0;31mThere are uncommitted changes in dotfiles...\e[0m"
+	printf '%bThere are uncommitted changes in dotfiles...%b\n' '\033[0;31m' '\033[0m'
 fi
 
 if git -C "${MY_PROJECTS_DIR}/dotfiles" diff master origin/master | grep -q .; then
-	echo "\e[0;31mLocal and remote dotfiles out of sync...\e[0m"
+	printf '%bLocal and remote dotfiles out of sync...%b\n' '\033[0;31m' '\033[0m'
 fi

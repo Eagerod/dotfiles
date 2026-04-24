@@ -33,7 +33,13 @@
 	cmd = "code --wait $MERGED"
 [diff]
 	tool = vscode
+	algorithm = histogram
+	colorMoved = plain
 [difftool "vscode"]
 	cmd = "code --wait --diff $LOCAL $REMOTE"
 [pull]
 	rebase = false
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate

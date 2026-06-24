@@ -1,0 +1,81 @@
+#!/usr/bin/env sh
+#
+# A little script to manage Sideloadmode Kobo Collections.
+set -euf
+
+help() {
+	echo "Usage:"
+	echo "  $0 -h"
+	echo "  $0 <db file> <collections-json|->"
+	echo ""
+	echo "collections-json:"
+	jq -n '{"collections": {"Some Collection Name": ["some/book/path.epub"]}}'
+}
+
+if [ "$#" -ne 2 ]; then
+	if [ "$#" -eq 1 ] && [ "$1" = "-h" ]; then
+		help
+		exit
+	fi
+
+	echo >&2 "Usage:"
+	echo >&2 "  $0 -h"
+	echo >&2 "  $0 <db file> <collections-json|->"
+	exit 1
+fi
+
+# Copy the SQLite file out to a temporary dir as to not write a bunch on the
+#   device's internal storage.
+if [ ! -f "$1" ]; then
+	echo >&2 "Database file not found"
+	exit 2
+fi
+
+RUN_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+CHECK_COLLECTION_QUERY='"SELECT 1 FROM Shelf WHERE Id = \"\(.value)\";"'
+EXISTS_QUERY='"SELECT 1 FROM content WHERE ContentType = 6 AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
+CHECK_QUERY='"SELECT 1 FROM ShelfContent WHERE ShelfName = \"\(.key)\" AND ContentId = \"file:///mnt/onboard/\(.value)\";"'
+CREATE_QUERY='. + {date: $d} | "INSERT INTO ShelfContent (ShelfName, ContentId, DateModified, _IsDeleted, _IsSynced) VALUES (\"\(.key)\", \"file:///mnt/onboard/\(.value)\", \"\(.date)\", \"false\", \"false\");"'
+
+temp_dir="$(mktemp -d)"
+trap 'rm -rf -- "$temp_dir"' EXIT
+
+temp_db="$temp_dir/db.sqlite"
+cp "$1" "$temp_db"
+
+# Can't read stdin multiple times, so if this is reading from stdin, dump to
+#   temp file.
+source_file="$2"
+if [ "$source_file" = "-" ]; then
+	source_file="$temp_dir/collections.json"
+	cat - > "$source_file"
+fi
+
+# Validate that collections exist.
+cat "$source_file" | jq -c '.collections | keys | to_entries[]' | while read -r line; do
+	query="$(jq -r "$CHECK_COLLECTION_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
+		echo >&2 "Failed to find collection: $(jq -r ".value" <<< "$line")"
+		echo >&2 "Does it exist on the device + is it spelled correctly?"
+		exit 3
+	fi
+done
+
+cat "$source_file" | jq -c '.collections | to_entries[] | {key, value: .value[]}' | while read -r line; do
+	query="$(jq -r "$EXISTS_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
+		echo >&2 "Failed to find content: $(jq -r ".value" <<< "$line")"
+		echo >&2 "Does it exist on the device + is it spelled correctly?"
+		exit 4
+	fi
+
+	query="$(jq -r "$CHECK_QUERY" <<< "$line")"
+	if [ -z "$(sqlite3 "$temp_db" "$query")" ]; then
+		command="$(jq -r --arg "d" "$RUN_DATE" "$CREATE_QUERY" <<< "$line")"
+		sqlite3 "$temp_db" "$command"
+		jq -r '"Inserted \"\(.value)\" into \"\(.key)\""' <<< "$line"
+	fi
+done
+
+# Copy completed DB back to internal storage.
+cp "$temp_db" "$1"
